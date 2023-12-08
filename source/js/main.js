@@ -64,7 +64,6 @@ window.addEventListener('DOMContentLoaded', () => {
   initMapModal();
   initMoveTo();
   initIntroSlider();
-  initCounters();
   initAnimateCircleText();
 
   // все скрипты должны быть в обработчике 'DOMContentLoaded', но не все в 'load'
