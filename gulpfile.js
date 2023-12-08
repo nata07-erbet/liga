@@ -27,15 +27,16 @@ const syncServer = () => {
 
   gulp.watch('source/pug/**/*.pug', gulp.series(pug, refresh));
   gulp.watch('source/sass/**/*.{scss,sass}', streamStyles);
-  gulp.watch('source/js/**/*.{js,json}', gulp.series(compileScripts, refresh));
+  gulp.watch('source/js/**/*.{js}', gulp.series(compileScripts, refresh));
   gulp.watch('source/data/**/*.{js,json}', gulp.series(copy, refresh));
   gulp.watch('source/img/**/*.svg', gulp.series(copySvg, sprite, pug, refresh));
   gulp.watch('source/img/**/*.{png,jpg,webp}', gulp.series(copyImages, pug, refresh));
 
   gulp.watch('source/favicon/**', gulp.series(copy, refresh));
-  gulp.watch('source/video/**', gulp.series(copy, refresh));
   gulp.watch('source/downloads/**', gulp.series(copy, refresh));
   gulp.watch('source/*.php', gulp.series(copy, refresh));
+  gulp.watch('source/api/**', gulp.series(copy, refresh));
+  gulp.watch('source/video/**', gulp.series(copy, refresh));
 };
 
 const build = gulp.series(clean, copy, sprite, gulp.parallel(compileMinStyles, compileScripts, pug));

@@ -4,72 +4,52 @@
   }
 }
 
-@mixin hover {
-  @media (hover: hover) {
-    &:hover:not(.focus-visible) {
-      @content;
-    }
-  }
-}
-
-@mixin focus {
-  &.focus-visible:focus {
-    @content;
-  }
-}
-
-@mixin active {
-  &.focus-visible:active {
-    @content;
-  }
-}
-
-@mixin hover-focus {
-  @media (hover: hover) {
-    &:hover:not(.focus-visible) {
-      @content;
-    }
-  }
-
-  &.focus-visible:focus {
-    @content;
-  }
-}
-
 // Desktop first
 
+@mixin vp-2239 {
+  @media (max-width: $vp-2240 - 1) {
+    @content;
+  }
+}
+
 @mixin vp-1919 {
-  @media (max-width: ($vp-1920 - 1px)) {
+  @media (max-width: $vp-1920 - 1) {
+    @content;
+  }
+}
+
+@mixin vp-1679 {
+  @media (max-width: $vp-1680 - 1) {
     @content;
   }
 }
 
 @mixin vp-1439 {
-  @media (max-width: ($vp-1440 - 1px)) {
+  @media (max-width: $vp-1440 - 1) {
     @content;
   }
 }
 
 @mixin vp-1279 {
-  @media (max-width: ($vp-1280 - 1px)) {
+  @media (max-width: $vp-1280 - 1) {
     @content;
   }
 }
 
 @mixin vp-1023 {
-  @media (max-width: ($vp-1024 - 1px)) {
+  @media (max-width: $vp-1024 - 1) {
     @content;
   }
 }
 
 @mixin vp-767 {
-  @media (max-width: ($vp-768 - 1px)) {
+  @media (max-width: $vp-768 - 1) {
     @content;
   }
 }
 
 @mixin vp-374 {
-  @media (max-width: ($vp-375 - 1px)) {
+  @media (max-width: $vp-375 - 1) {
     @content;
   }
 }
@@ -116,3 +96,25 @@
 
 // не нужно добавлять свои миксины для ресета списков, обнуления кнопок и прочие
 // этим вы усложняете работу команды, проверку вашего кода и будущую поддержку проекта
+
+@mixin animation($name, $duration, $tf, $fm: both) {
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-timing-function: $tf;
+
+  animation-fill-mode: $fm;
+
+  @include vp-767 {
+    animation: none;
+  }
+}
+
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: calc(($height / $width) * 100%);
+  }
+}

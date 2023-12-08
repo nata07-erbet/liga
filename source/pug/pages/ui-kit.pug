@@ -4,186 +4,213 @@ block variables
   - const title = "UI-kit"
 
 block main
-  style
-    include ../../sass/inline/uikit.css
-    include ../../sass/inline/prism.css
+  style.
+    main {
+      margin-top: 100px;
+    }
 
+    main > .container {
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+
+    .components-backwards {
+      color: #ffffff;
+      display: inline-block;
+    }
+
+    .components-backwards span:first-child {
+      position: relative;
+      top: -3px;
+
+      display: inline-block;
+      margin-right: 15px;
+
+      font-size: 16px;
+      line-height: 24px;
+      vertical-align: top;
+
+      transform: scale(2);
+    }
+
+    .components-backwards span:last-child {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .components-backwards + h1 {
+      margin-bottom: 0;
+    }
+
+    .container > section {
+      padding: 70px 0 0 0;
+    }
+
+    section > h2 {
+      margin: 0 0 20px 0;
+      padding: 20px 0;
+      position: relative;
+      color: #ffffff;
+    }
+
+    section > h2::before {
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 100vw;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      background-color: #8f7965;
+      z-index: -1;
+    }
+
+    .header-ui {
+      background-color: #8f7965;
+      padding: 20px 0;
+      position: fixed;
+      width: 100vw;
+      z-index: 99;
+      box-shadow: 0 0 3px 1px #000000;
+    }
+
+    .header-ui__nav {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 20px 80px;
+    }
+
+    .header-ui__inner-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 30px;
+    }
+
+    .header-ui__inner-link {
+      color: #ffffff;
+      transition: color 0.3s ease;
+    }
+
+    .header-ui__inner-link:hover,
+    .header-ui__inner-link.is-active {
+      color: #ffd04f;
+    }
+
+    .header-ui__inner-link.is-inactive {
+      color: #ffffff;
+      pointer-events: none;
+    }
+
+  header.header-ui
+    nav.header-ui__nav.container
+      a.components-backwards(href="sitemap.html")
+        span &larr;
+        span вернуться на разводящую
+      ul.header-ui__inner-list
+        li.header-ui__inner-item
+          a.header-ui__inner-link(href="#modals", data-navigation-link) Modals
+        li.header-ui__inner-item
+          a.header-ui__inner-link(href="#buttons", data-navigation-link) Buttons
+        li.header-ui__inner-item
+          a.header-ui__inner-link(href="#form-elements", data-navigation-link) Form elements
+        li.header-ui__inner-item
+          a.header-ui__inner-link(href="#socials", data-navigation-link) Socials
   main
-    .uikit
-      //----------------------- Разделы с компонентами
-      .uikit__sections(data-scroll-lock-fill-gap)
-        label(for="section-burger")
-          span Разделы&nbsp;компонентов
-        input.visually-hidden(type="checkbox", checked, id="section-burger")
-        div
-          ul
-            li
-              a(href="#modals") Модальные окна
-            li
-              a(href="#buttons") Кнопки
-            li
-              a(href="#forms") Элементы форм
+    .container
+      h1 UI-kit
+      //- все модалки проекта добавляем сюда, для удобства тестирования
+      section(id="modals")
+        h2 Modals
+        p
+          +btn({text: "modal-bath"})(data-open-modal="bath")
+        p
+          +btn({text: "modal-booking"})(data-open-modal="booking")
 
-      //----------------------------------------------
-      .container
-        a.uikit__header-link(href="sitemap.html")
-          img(src="https://via.placeholder.com/300x150", width="300", alt="Логотип проекта")
-        h1.uikit__h1 Компоненты, используемые на проекте
+      section(id="buttons")
+        h2 Buttons
+        +btn({text: "Текст", href: "#"})
+        p Пример вызова
+        code
+          pre +btn({text: "Текст", href: "#"})
+        +btn({text: "Кнопка с белым ховером", href: "#"}).btn--reverse
+        p Пример вызова
+        code
+          pre +btn({text: "Кнопка с обратным ховером", href: "#"}).btn--reverse
+        +btn({text: "Большая кнопка", href: "#"}).btn--large
+        p Пример вызова
+        code
+          pre +btn({text: "Большая кнопка", href: "#"}).btn--large
+        +btn({text: "Текст"})(disabled)
+        p Пример вызова
+        code
+          pre +btn({text: "Текст"})(disabled)
+        +scroll-btn()
+        p Пример вызова
+        code
+          pre +scroll-btn()
+        +download-btn({href: "#", name: "Название файла", info: "информация"})
+        p Пример вызова
+        code
+          pre +download-btn({href: "#", name: "Название файла", info: "информация"})
+        button.btn-tab.text.text--small-caps Таб
+        p Пример вызова
+        code
+          pre button.btn-tab.text.text--small-caps
 
-        section.uikit__section
-          h2.uikit__h2 Название компонента или группы компонентов
-          p.uikit__text Информация о компоненте (подсказки \ предупреждение \ важная информация)
-          .uikit__component
-            p.uikit__text  Класс компонента \ модификаторы
-            pre
-              |
-              code(class="language-pug").
-                p Пример кода
+      section(id="form-elements")
+        h2 Form elements
+        div(data-validate)
+          form(method="post")
+            +custom-input({inputLabel: "Введите ваше имя", inputError: "Не корректное имя", inputName: "user-name", inputMinLength: "2"})(data-validate-type="text", data-limitations="name")
+            p Пример вызова
+            code
+              pre +custom-input({inputLabel: "Введите ваше имя", inputError: "Не корректное имя", inputName: "user-name", inputMinLength: "2"})(data-validate-type="text", data-limitations="letters")
+            +custom-input({inputType: "tel",inputLabel: "Введите ваш телефон", inputError: "Не корректный телефон", inputName: "user-phone"})(data-validate-type="phone")
+            p Пример вызова
+            code
+              pre +custom-input({inputLabel: "Введите ваш телефон", inputError: "Не корректный телефон", inputName: "user-phone"})(data-validate-type="phone")
+            +custom-input({inputType: "email", inputLabel: "Введите ваш email", inputError: "Не корректный email", inputName: "user-email"})(data-validate-type="email")
+            p Пример вызова
+            code
+              pre +custom-input({inputLabel: "Введите ваш email", inputError: "Не корректный email", inputName: "user-email"})(data-validate-type="email")
+            +custom-textarea({inputLabel: "Расскажите о себе", inputName: "user-info"})
+            p Пример вызова
+            code
+              pre +custom-textarea({inputLabel: "Расскажите о себе", inputName: "user-info"})
+            +custom-toggle({inputLabel: "Подтвердите своё согласие", inputError: "Согласие является обязательным", inputName: "user-agreement", inputChecked: true})(data-validate-type="checkbox").custom-toggle--checkbox
+            p Пример вызова
+            code
+              pre +custom-toggle({inputLabel: "Подтвердите своё согласие", inputError: "Согласие является обязательным", inputName: "user-agreement", inputChecked: true})(data-validate-type="checkbox").custom-toggle--checkbox
+            +bath-option({title: "Баня кочевника", value: "nomad", id: "nomad", guests: "2 — 4",price: "30 000 — 26 667", img: {name: "img-1", format: "jpg", width: "818", height: "513"}, modal: "bath"})
+            p Пример вызова
+            code
+              pre +bath-option({title: "Баня кочевника", value: "nomad", id: "nomad", guests: "2 — 4",price: "30 000 — 26 667", img: {name: "img-1", format: "jpg", width: "818", height: "513"}, modal: "bath"})
+            +bath-option({title: "Баня кочевника", isDisabled: true, value: "nomad-1", id: "nomad-2", guests: "2 — 4",price: "30 000 — 26 667", img: {name: "img-1", format: "jpg", width: "818", height: "513"}, modal: "bath"}).is-error-date
+            p Пример вызова
+            code
+              pre +bath-option({title: "Баня кочевника", isDisabled: true, value: "nomad-1", id: "nomad-1", guests: "2 — 4",price: "30 000 — 26 667", img: {name: "img-1", format: "jpg", width: "818", height: "513"}, modal: "bath"}).is-error-date
+            +bath-option({title: "Баня кочевника", isDisabled: true, value: "nomad-2", id: "nomad-2", guests: "2 — 4",price: "30 000 — 26 667", img: {name: "img-1", format: "jpg", width: "818", height: "513"}, modal: "bath"}).is-error-guests
+            p Пример вызова
+            code
+              pre +bath-option({title: "Баня кочевника", isDisabled: true, value: "nomad-2", id: "nomad-2", guests: "2 — 4",price: "30 000 — 26 667", img: {name: "img-1", format: "jpg", width: "818", height: "513"}, modal: "bath"}).is-error-guests
+            +btn({text: "Сбросить форму", type: "reset"})
+            +btn({text: "Отправить форму", type: "submit"})
 
-        //- Модальные окна
-        section.uikit__section(id="modals")
-          h2.uikit__h2 Модальные окна
-          .uikit__component
-            p.uikit__text.uikit__text--class .modal \ .modal--feedback
-            +btn({text: "modal-feedback"})(data-open-modal="feedback")
-            pre
-              |
-              code(class="language-pug").
-                +btn({text: "modal-feedback"})(data-open-modal="feedback")
-          .uikit__component
-            p.uikit__text.uikit__text--class .modal \ .modal--success
-            +btn({text: "modal-success"})(data-open-modal="success")
-            pre
-              |
-              code(class="language-pug").
-                +btn({text: "modal-success"})(data-open-modal="success")
-
-        //- Кнопки
-        section.uikit__section(id="buttons")
-          h2.uikit__h2 Кнопки
-          .uikit__component
-            p.uikit__text.uikit__text--class .btn \ default \ button
-            +btn({text: "Кнопка"})
-            pre
-              |
-              code(class="language-pug").
-                +btn({text: "Текст", href: "#"})
-          .uikit__component
-            p.uikit__text.uikit__text--class .btn \ .btn--red \ link
-            +btn({text: "Текст", href: "#", isExternal: true}).btn--red(aria-label="Просто ссылка")
-            pre
-              |
-              code(class="language-pug").
-                +btn({text: "Текст", href: "#", isExternal: true})(aria-label="Просто ссылка").btn--red
-          .uikit__component
-            p.uikit__text.uikit__text--class .btn \ disabled \ button
-            +btn({text: "Текст"})(disabled)
-            pre
-              |
-              code(class="language-pug").
-                +btn({text: "Текст"})(disabled)
-
-        //- Элементы форм
-        section.uikit__section(id="forms")
-          h2.uikit__h2 Элементы форм
-          .uikit__component
-            p.uikit__text.uikit__text--class .custom-input \ type="text"
-            +custom-input({
-              inputLabel: "Введите ваше имя",
-              inputName: "user-name-1",
-            })
-            pre
-              |
-              code(class="language-pug").
-                +custom-input({
-                  inputLabel: "Введите ваше имя",
-                  inputName: "user-name-1",
-                })
-          .uikit__component
-            p.uikit__text.uikit__text--class .custom-input \ type="tel"
-            +custom-input({
-              inputType: "tel",
-              inputLabel: "Введите номер телефона",
-              inputName: "user-phone",
-            })
-            pre
-              |
-              code(class="language-pug").
-                +custom-input({
-                  inputType: "tel",
-                  inputLabel: "Введите номер телефона",
-                  inputName: "user-phone",
-                })
-          .uikit__component
-            p.uikit__text.uikit__text--class .custom-input \ type="email"
-            +custom-input({
-              inputType: "email",
-              inputLabel: "Введите вашу почту",
-              inputName: "user-mail",
-            })
-            pre
-              |
-              code(class="language-pug").
-                +custom-input({
-                  inputType: "email",
-                  inputLabel: "Введите вашу почту",
-                  inputName: "user-mail",
-                })
-          .uikit__component
-            p.uikit__text.uikit__text--class +custom-textarea \ default
-            +custom-textarea({
-              inputLabel: "Расскажите о себе",
-              inputName: "user-info"
-            })
-            pre
-              |
-              code(class="language-pug").
-                +custom-textarea({
-                  inputLabel: "Расскажите о себе",
-                  inputName: "user-info"
-                })
-          .uikit__component
-            p.uikit__text.uikit__text--class +custom-toggle \ default
-            +custom-toggle({
-              inputLabel: "Чекбокс",
-              inputName: "user-agreement",
-              inputValue: "user-agreement-1",
-              inputChecked: false
-            }).custom-toggle--checkbox
-            pre
-              |
-              code(class="language-pug").
-                +custom-toggle({
-                  inputLabel: "Чекбокс",
-                  inputName: "user-agreement",
-                  inputValue: "user-agreement-1",
-                  inputChecked: false
-                }).custom-toggle--checkbox
-
-
-          .uikit__component
-            p.uikit__text Базовый селект c placeholder
-            p.uikit__text.uikit__text--class +custom-select \ default
-            +custom-select({
-              placeholder: "Выберите одну из опций",
-              error: "Выберите тему обращения",
-              optionsList: [{text: "Тема 1", value: "id-1"}, {text: "Тема 2", value: "id-2"}, {text: "Тема 3", value: "id-3"}, {text: "Тема 4", value: "id-4"}, {text: "Тема 5", value: "id-5"}, {text: "Тема 6", value: "id-6"}]
-            })(data-select, data-validate-type="select", data-name="some-name", data-id="id-example-1").custom-select
-            pre
-              |
-              code(class="language-pug").
-                +custom-select({
-                  placeholder: "Выберите одну из опций",
-                  error: "Выберите тему обращения",
-                  optionsList: [{text: "Тема 1", value: "id-1"}, {text: "Тема 2", value: "id-2"}, {text: "Тема 3", value: "id-3"}, {text: "Тема 4", value: "id-4"}, {text: "Тема 5", value: "id-5"}, {text: "Тема 6", value: "id-6"}]
-                })(data-select, data-validate-type="select", data-name="some-name", data-id="id-example-1").custom-select
-
+      section(id="socials")
+        h2 Socials
+        +socials()
+        p Пример вызова
+        code
+          pre +socials()
 
   script
     include ../../js/inline/ui-kit.js
 
 block modals
-  +modal("modal--feedback")(data-modal="feedback")
-    +modal-feedback()
-  +modal("modal--success modal--no-scale modal--fit-content")(data-modal="success")
-    +modal-success()
+  +modal("modal--no-scale modal--bath")(data-modal="bath")
+    +modal-bath()
+  +modal("modal--no-scale modal--booking")(data-modal="booking")
+    +modal-booking()

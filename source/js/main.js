@@ -1,8 +1,39 @@
-import {mobileVhFix} from './utils/mobile-vh-fix.js';
+/* eslint-disable no-undef */
+/* eslint-disable no-new */
+import './utils/scroll-lock';
+import {iosVhFix} from './utils/ios-vh-fix';
 import {initModals} from './modules/modals/init-modals';
-import {Form} from './modules/form-validate/form';
-import {CustomSelect} from './modules/select/custom-select';
-import {uploadFile, uploadImageDrop} from './modules/input-file/init-upload';
+import {initAdvantagesSlider} from './modules/sliders/init-advantages-slider';
+import {initBathsSlider} from './modules/sliders/init-baths-slider';
+import {initCuisineSlider} from './modules/sliders/init-cuisine-slider';
+import {initBathSlider} from './modules/sliders/init-bath-slider';
+import {initMap} from './modules/init-map';
+import {initContactsMap} from './modules/init-contacts-map';
+import {initMapModal} from './modules/init-map-modal';
+import {initMenu} from './modules/init-menu';
+import {initAccordions} from './modules/init-accordions';
+import {initMoveTo} from './modules/init-move-to';
+import {initModalAnimation} from './modules/init-modal-animation';
+import {cookieConsentChecker} from './modules/cookie/cookie-consent-checker';
+import {initBathGallery} from './modules/sliders/init-baths-img-slider';
+import {initAnimation} from './modules/init-animation';
+import {initIntroBg} from './modules/init-intro-bg';
+import {initAnimateCircleText} from './modules/init-animate-circle-text';
+import {initServiceSwiper} from './modules/sliders/init-service-swiper';
+import {initValuesSwiper} from './modules/sliders/init-values-swiper';
+import {initVideo} from './modules/init-video';
+import {initReadMore} from './modules/init-read-more';
+import {initRotateScreen} from './modules/init-rotate-screen';
+import {initFixLabel} from './modules/form/init-fix-label';
+// import {initVideoInner} from './modules/init-inner-video';
+import {initTabs} from './modules/init-tabs';
+import {initIntroSlider} from './modules/sliders/init-intro-slider';
+import {initHeader} from './modules/init-header';
+import {initInnerContactsMap} from './modules/init-inner-contacts-map';
+import {initMobileSlider} from './modules/sliders/init-mobile-slider';
+import {initPlayer} from './modules/init-player';
+import {initContactsSlider} from './modules/sliders/init-contacts-slider';
+import {screenHeight} from './modules/init-screen-height';
 
 // ---------------------------------
 
@@ -11,46 +42,49 @@ window.addEventListener('DOMContentLoaded', () => {
   // Utils
   // ---------------------------------
 
-  mobileVhFix();
+  iosVhFix();
 
   // Modules
   // ---------------------------------
 
+  initAccordions();
+  initMenu();
+  initIntroBg();
+  screenHeight();
+  initBathSlider();
+  initBathsSlider();
+  initAdvantagesSlider();
+  initCuisineSlider();
+  initMobileSlider();
+  initAnimation();
+  initModals();
+  initModalAnimation();
+  initVideo();
+  initMap();
+  initMapModal();
+  initMoveTo();
+  initIntroSlider();
+  initCounters();
+  initAnimateCircleText();
+
   // все скрипты должны быть в обработчике 'DOMContentLoaded', но не все в 'load'
   // в load следует добавить скрипты, не участвующие в работе первого экрана
   window.addEventListener('load', () => {
-    initModals();
-    uploadFile();
-    uploadImageDrop();
-    const select = new CustomSelect();
-    select.init();
-    const form = new Form();
-    window.form = form;
-    form.init();
+    initRotateScreen();
+
+    initContactsMap();
+    initContactsSlider();
+    cookieConsentChecker();
+    initBathGallery();
+    initServiceSwiper();
+    initValuesSwiper();
+    // initVideo();
+    initReadMore();
+    initFixLabel();
+    initTabs();
+    initHeader();
+    initInnerContactsMap();
+    initPlayer();
   });
 });
 
-// ---------------------------------
-
-// ❗❗❗ обязательно установите плагины eslint, stylelint, editorconfig в редактор кода.
-
-// привязывайте js не на классы, а на дата атрибуты (data-validate)
-
-// вместо модификаторов .block--active используем утилитарные классы
-// .is-active || .is-open || .is-invalid и прочие (обязателен нейминг в два слова)
-// .select.select--opened ❌ ---> [data-select].is-open ✅
-
-// выносим все в дата атрибуты
-// url до иконок пинов карты, настройки автопрокрутки слайдера, url к json и т.д.
-
-// для адаптивного JS используейтся matchMedia и addListener
-// const breakpoint = window.matchMedia(`(min-width:1024px)`);
-// const breakpointChecker = () => {
-//   if (breakpoint.matches) {
-//   } else {
-//   }
-// };
-// breakpoint.addListener(breakpointChecker);
-// breakpointChecker();
-
-// используйте .closest(el)

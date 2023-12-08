@@ -9,15 +9,17 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  /* stylelint-disable-next-line */
+  min-height: var(--screen-height, 100vh);
 }
 
 html {
   font-style: normal;
   font-weight: 400;
-  font-size: $fz-default;
-  line-height: 24px;
-  font-family: $ff-placeholder;
-  color: $color-default-black;
+  font-size: size-coefficient-xl($fz-default);
+  line-height: size(24px);
+  font-family: $ff-euclidsquare;
+  color: $color-coffee-bean;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -25,17 +27,33 @@ html {
   text-rendering: optimizeLegibility;
   // если по прежнему есть проблемы с выравниванием
   // https://transfonter.org/ - включите настройку https://prnt.sc/12rnt6g и переконвертируйте шрифт
+
+  @include vp-2239 {
+    font-size: size-coefficient-lg($fz-default);
+  }
+
+  @include vp-1919 {
+    font-size: size-coefficient($fz-default);
+  }
+
+  @include vp-1679 {
+    font-size: $fz-default;
+  }
+
+  @include vp-767 {
+    font-size: size-mobile($fz-default);
+  }
 }
 
 body {
   width: 100%;
   height: 100%;
 
-  background-color: $color-default-white;
+  background-color: $color-hint-of-red;
 }
 
 a {
-  color: $color-default-black;
+  color: $color-coffee-bean;
   text-decoration: none;
 }
 

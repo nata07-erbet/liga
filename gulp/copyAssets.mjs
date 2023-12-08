@@ -6,7 +6,20 @@ const copyImages = () => gulp.src('source/img/**/*.{png,jpg,jpeg,webp,avif}', {b
 
 const copy = () =>
   gulp
-      .src(['source/**.html', 'source/fonts/**', 'source/img/**', 'source/favicon/**', 'source/data/**'], {
+      .src([
+        'source/fonts/**',
+        'source/img/**',
+        'source/data/**',
+        'source/favicon/**',
+        'source/video/**',
+        'source/downloads/**',
+        'source/*.php',
+        'source/email/**',
+        'source/api/**',
+        'source/php_mailer_club/**',
+        'source/php_mailer_contacts/**',
+        'source/php_mailer_booking/**'
+      ], {
         base: 'source',
       })
       .pipe(gulp.dest('build'));

@@ -1,3 +1,5 @@
-// Swiper 8.4.7
-// import './vendor/swiper';
-import './vendor/focus-visible-polyfill';
+// Swiper 7.4.1
+import './vendor/swiper';
+import './vendor/moveTo';
+import './vendor/flatpickr';
+import './vendor/ru';
