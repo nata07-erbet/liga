@@ -34,6 +34,17 @@ import {initMobileSlider} from './modules/sliders/init-mobile-slider';
 import {initPlayer} from './modules/init-player';
 import {initContactsSlider} from './modules/sliders/init-contacts-slider';
 import {screenHeight} from './modules/init-screen-height';
+import  {sumCertificate} from './modules/nata-sum-certificate';
+import {orientation} from './modules/nata-orientation';
+import {giftCertificate} from './modules/nata-real-certificate';
+import {showCertificate} from './modules/nata-show-certificate';
+import {setAttributes} from './modules/nata-set-attributes';
+import {sendForm} from './modules/nata-form-send';
+import {buttonNotActive} from './modules/nata-button-not-active';
+import {bathHouseIsActive} from './modules/nata-bath-house-is-active';
+import {loadBath} from './modules/nata-load-bath';
+import {setAdultsValue} from './modules/nata-set-adults-value';
+import {renderBathList} from './modules/nata-render-bath-list;'
 
 // ---------------------------------
 
@@ -70,7 +81,6 @@ window.addEventListener('DOMContentLoaded', () => {
   // в load следует добавить скрипты, не участвующие в работе первого экрана
   window.addEventListener('load', () => {
     initRotateScreen();
-
     initContactsMap();
     initContactsSlider();
     cookieConsentChecker();
@@ -84,6 +94,17 @@ window.addEventListener('DOMContentLoaded', () => {
     initHeader();
     initInnerContactsMap();
     initPlayer();
+
+    sumCertificate();
+    orientation();
+    giftCertificate();
+    showCertificate();
+    setAttributes();
+    sendForm();
+    buttonNotActive();
+    bathHouseIsActive();
+    setAdultsValue();
+    renderBathList();
   });
 });
 
