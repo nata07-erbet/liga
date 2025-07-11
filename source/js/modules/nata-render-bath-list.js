@@ -1,20 +1,19 @@
-import {renderElement} from '../utils';
+import {renderElement} from '../utils/render';
 import {loadBath} from './nata-load-bath';
 
 import {bathCardTemplate} from './booking/templates/bath-card-template';
 
-const renderBathList = () => {
-  const baths = loadBath();
+const renderBathList = async () => {
+  const { data: baths } = await loadBath();
 
   const bathContainer = document.querySelector('.select-bath__wrapper');
 
-  baths.map((bath) => {
-    const bathTemplate = bathCardTemplate(bath);
-    renderElement(bathContainer, bathTemplate)
-  })
-
-
-
+  if (bathContainer) {
+    baths.forEach((bath) => {
+      const bathTemplate = bathCardTemplate(bath);
+      renderElement(bathContainer, bathTemplate);
+    });
+  }
 };
 
-export {renderBathList}
+export {renderBathList};

@@ -25,7 +25,3 @@ export const formatDate = (date) => {
 
   return `${day} ${month}`;
 };
-
-export const renderElement = (container, component, place = 'beforeend') => {
-  container.insertAdjacentHTML(place, component);
-};

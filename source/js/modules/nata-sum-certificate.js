@@ -7,7 +7,9 @@ const sumCertificate = () => {
   };
 
   const inputs = document.querySelectorAll('div.certificate-option > input');
-  inputs.map((input) => input.addEventListener(onchange, onChangeValue));
+  if (inputs) {
+    inputs.forEach((input) => input.addEventListener(onchange, onChangeValue));
+  }
 };
 
-export {sumCertificate}
+export {sumCertificate};

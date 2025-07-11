@@ -12,35 +12,33 @@ const sendForm = () => {
     const phone = document.getElementById('phone').value;
     const email = document.getElementById('email').value;
 
-   const isValid = () => {
-    !!name || !!phone  || !!email
-    ? true
-    : false
-   };
+    const isValid = () => !!name || !!phone || !!email;
 
-   if(isValid) {
-    const formData = {
-      certificatesName: name,
-      certificatesPhone: phone,
-      certificatesEmail: email
-    };
+    if (isValid) {
+      const formData = {
+        certificatesName: name,
+        certificatesPhone: phone,
+        certificatesEmail: email,
+      };
 
-    fetch('/api/buy/certificate',{
-      method: POST,
-      body: JSON.stringify(formData)
-    })
-    .then((response) => {
-      if(!response.ok) {
-        throw new Error('Сетевой ответ не в пределах ожидаемого.');
-        window.location.pathname ='/certificates-error.html'
-      }
-        return response.json();
-        window.location.pathname = 'certificates-success.html'
-    });
-   }
-
-  button.addEventListener('click', handleFormSubmit);
+      fetch('/api/buy/certificate', {
+        method: 'POST',
+        body: JSON.stringify(formData),
+      })
+          .then((response) => {
+            if (!response.ok) {
+              window.location.pathname = '/certificates-error.html';
+              throw new Error('Сетевой ответ не в пределах ожидаемого.');
+            }
+            window.location.pathname = 'certificates-success.html';
+            return response.json();
+          });
+    }
   };
+
+  if (button) {
+    button.addEventListener('click', handleFormSubmit);
+  }
 };
 
 export {sendForm};

@@ -2,7 +2,7 @@ import {
   MIN_VALUE_ADULTS,
   MAX_VALUE_ADULTS
 } from './constants.js';
-const setQuantityAdults= () => {
+const setQuantityAdults = () => {
 
   const decreaseButton = document.getElementById('parent > decrease');
   const increaseButton = document.getElementById('parent > increase');
@@ -15,24 +15,25 @@ const setQuantityAdults= () => {
   const handleDecButton = () => {
     let currentValue = adultsQtyInput.value;
 
-    if(currentValue > minValue ) {
+    if (currentValue > minValue) {
       currentValue--;
       adultsQtyInput.value = currentValue;
     } else if (
       currentValue === minValue
     ) {
-      decreaseButton.setAttribute('disabled', '')
-    }};
+      decreaseButton.setAttribute('disabled', '');
+    }
+  };
 
   const handleIncButton = () => {
     let currentValue = adultsQtyInput.value;
 
-    if(currentValue < maxValue) {
+    if (currentValue < maxValue) {
       currentValue++;
       adultsQtyInput.value = currentValue;
-      decreaseButton.removeAttribute('disabled')
-    } else if (currentValue > maxValue){
-      increaseButton.setAttribute('disabled', '')
+      decreaseButton.removeAttribute('disabled');
+    } else if (currentValue > maxValue) {
+      increaseButton.setAttribute('disabled', '');
     }
   };
 
@@ -40,5 +41,5 @@ const setQuantityAdults= () => {
   increaseButton.addEventListener('click', handleIncButton);
 };
 
-export {setQuantityAdults}
+export {setQuantityAdults};
 

@@ -13,14 +13,16 @@ const dataByCertificate = () => {
   const handleButtonView = () => {
     certificateMessage.textContent = inputNameValue;
 
-    if(inputGift.checked) {
+    if (inputGift.checked) {
       certificateMessage.textContent = inputNameGiftValue + messageGiftValue;
     }
   };
 
-  certificateOptions.map((input) => input.checked === true
-  ? certificatePrice.textContent = input.value
-  : '');
+  certificateOptions.forEach((input) => {
+    if (input.checked) {
+      certificatePrice.textContent = input.value;
+    }
+  });
 
   buttonView.addEventListener('click', handleButtonView);
 };

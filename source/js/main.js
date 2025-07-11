@@ -34,17 +34,15 @@ import {initMobileSlider} from './modules/sliders/init-mobile-slider';
 import {initPlayer} from './modules/init-player';
 import {initContactsSlider} from './modules/sliders/init-contacts-slider';
 import {screenHeight} from './modules/init-screen-height';
-import  {sumCertificate} from './modules/nata-sum-certificate';
-import {orientation} from './modules/nata-orientation';
-import {giftCertificate} from './modules/nata-real-certificate';
+import {sumCertificate} from './modules/nata-sum-certificate';
+import {realCertificate} from './modules/nata-real-certificate';
 import {showCertificate} from './modules/nata-show-certificate';
 import {setAttributes} from './modules/nata-set-attributes';
 import {sendForm} from './modules/nata-form-send';
 import {buttonNotActive} from './modules/nata-button-not-active';
 import {bathHouseIsActive} from './modules/nata-bath-house-is-active';
-import {loadBath} from './modules/nata-load-bath';
 import {setAdultsValue} from './modules/nata-set-adults-value';
-import {renderBathList} from './modules/nata-render-bath-list;'
+import {renderBathList} from './modules/nata-render-bath-list';
 
 // ---------------------------------
 
@@ -96,8 +94,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initPlayer();
 
     sumCertificate();
-    orientation();
-    giftCertificate();
+    realCertificate();
     showCertificate();
     setAttributes();
     sendForm();

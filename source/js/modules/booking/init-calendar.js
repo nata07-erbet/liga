@@ -1,6 +1,6 @@
 import {initCalendarSwipe} from './calendar-swipe';
 import {timeSlotTemplate} from './templates/time-slot-template';
-import {renderElement} from './utils';
+import {renderElement} from '../../utils/render';
 
 const calendarBlock = document.querySelector('[data-calendar]');
 const container = document.querySelector('[data-time="parent"]');
