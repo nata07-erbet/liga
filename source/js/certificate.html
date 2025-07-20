@@ -411,7 +411,7 @@
                           </label>
                         </div>
                       </div>
-                      <div class="custom-toggle custom-toggle--checkbox 0-т ">
+                      <div class="custom-toggle custom-toggle--checkbox fib">
                         <label>
                           <input type="checkbox" id="real"><span class="custom-toggle__icon">
                             <svg width="16" height="16" aria-hidden="true">
@@ -800,226 +800,251 @@
     }
   });
 })();
-
     </script>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=bac9c797-f5b3-4580-939d-ff7fdca06b5a&amp;lang=ru_RU"></script>
-    <script src="js/vendor.min.js"></script>
-    <script src="js/main.min.js"></script>
-<!-- МОИ функции-->
 
 <!--  По умолчанию должно быть выбрано 50000Р. -->
     <script>
-    (function defaultPriceNata () {
-      window.addEventListener('DOMContentLoaded', () => {
-        const radioValue  = document.getElementById('certif-1');
-            if(radioValue){
-                radioValue.checked = true;
-            };
-      })})();
-    </script>
-<!--  Выбранная сумма отражается в сертификате и перед кнопкой Перейти к оплате согласно макету.. -->
-  <script>
-    (function () {
-      const dataPriceValue = document.querySelector('[data-price-value]');
-      const radios = document.getElementsByName('certificate-option');
-
-      function updatePrice() {
-        const selectedRadio = document.querySelector('input[name="certificate-option"]:checked');
-        if (dataPriceValue && selectedRadio) {
-          dataPriceValue.textContent = Number(selectedRadio.value).toLocaleString('ru-RU') + ' ₽';
-        }
-      };
-      document.addEventListener('DOMContentLoaded', updatePrice);
-
-      Array.from(radios).forEach((radio) => {
-        radio.addEventListener('change', updatePrice);
+      (function defaultPriceNata () {
+        window.addEventListener('DOMContentLoaded', () => {
+          const radioValue = document.getElementById('certif-1');
+          if (radioValue) {
+            radioValue.checked = true;
+       }
       });
-    })();
-  </script>
+      })();
+    // <!--  Выбранная сумма отражается в сертификате и перед кнопкой Перейти к оплате согласно макету.. -->
 
-  <!--Выбор ориентации сертификата осуществляется с помощью радиокнопок вертикальная и горизонтальна-->
-  <script>
-    (function setOrientation () {
-      const modalCertificate = document.querySelector('.modal-certificate');
+      (function getDataPrice () {
+          const dataPriceValue = document.querySelector('[data-price-value]');
+          const radios = document.getElementsByName('certificate-option');
 
-      const verticalInput = document.querySelector('input[value="vertical"]');
-      const horisontInput = document.querySelector('input[value="horizontal"]');
+          function updatePrice() {
+            const selectedRadio = document.querySelector('input[name="certificate-option"]:checked');
+            if (dataPriceValue && selectedRadio) {
+              dataPriceValue.textContent = Number(selectedRadio.value).toLocaleString('ru-RU') + ' ₽';
+            }
+          };
+          document.addEventListener('DOMContentLoaded', updatePrice);
 
-      verticalInput.addEventListener('change', (evt) => {
-      if(evt.target.checked) {
-        alert(1);
-
-        modalCertificate.classList.remove('is-horizontal');
-        modalCertificate.classList.add('is-vertical')
-      };
-      });
-
-    horisontInput.addEventListener('change', (evt) => {
-      alert(2);
-
-      if(evt.target.checked) {
-        modalCertificate.classList.remove('is-vertical');
-        modalCertificate.classList.add('is-horizontal')
-      }
-    })
-  })()
-  </script>
-  <!--Чекбокс Хочу физический сертификат передаёт значение в форму далее, вид интерфейса не меняет. ?-->
-
-  <!--Чекбокс Сертификат в подарок открывает дополнительные пункты формы-->
-  <script>
-    (function () {
-      const giftForm = document.querySelector('[data-certificates="gift"]');
-      const giftCheckBox =  document.querySelector('[data-certificates="toggle"] input[type="checkbox"]');
-
-      giftCheckBox.addEventListener('change', (evt) => {
-        if(evt.target.checked) {
-          giftForm.classList.remove('certificates__fieldset--gift');
-        } else {
-          giftForm.classList.add('certificates__fieldset--gift');
-        }
-      })
-    })()
-  </script>
-
-  <!---В сертификат подставляются данные из формы (сумма сертификата и имя), -->
-  <script>
-    (function setNameAndPrice () {
-      const priceInputs  = document.getElementsByName('certificate-option');
-
-      const nameGiftInput = document.getElementById('name-gift');
-      const messageInput = document.getElementById('message');
-
-      const modalCertificatePrice = document.querySelector('.modal-certificate__price');
-      const modalCertificateMessage = document.querySelector('.modal-certificate__message');
-
-      const giftCheckBox =  document.querySelector('[data-certificates="toggle"] input[type="checkbox"]');
-
-
-      const updateCertificatePrice = () => {
-        const selectedInput = Array.from(priceInputs).find(input => input.checked);
-        const price = selectedInput ? Number(selectedInput.value).toLocaleString('ru-RU') : '50 0000';
-        modalCertificatePrice.textContent = price;
-      };
-
-      Array.from(priceInputs).forEach((input) => {
-        input.addEventListener('change', updateCertificatePrice)
-      });
-
-      const updateCertificateNameAndMessage = () => {
-        const name = nameGiftInput.value;
-        const message =  messageInput.value;
-
-        if(giftCheckBox.checked) {
-          if (name && message) {
-            modalCertificateMessage.textContent =  `${name}, ${message}`
-          } else {
-            modalCertificateMessage.textContent =  `${name}`
-          }
-        } else {
-          modalCertificateMessage.textContent = ''
-        }
-      };
-
-      nameGiftInput.addEventListener('input', updateCertificateNameAndMessage);
-      messageInput.addEventListener('input', updateCertificateNameAndMessage)
-
-      document.addEventListener('DOMContentLoaded',  () => {
-        updateCertificatePrice();
-        updateCertificateNameAndMessage();
-      });
-    })()
-  </script>
-  <!--Обязательными полями для заполнения являются: Ваши имя и фамилия, Телефон, Email. Если выбрано условие сертификат в подарок, то обязательными становятся дополнительные поля Имя получателя и Телефон получателя. -->
-  <script>
-    (function isRequired() {
-      const inputs = document.querySelectorAll('.custom-input input');
-
-      Array.from(inputs).forEach((input) => input.setAttribute('required', ''));
-    })()
-  </script>
-  <!--Если выбрано условие сертификат в подарок, то обязательными становятся дополнительные поля Имя получателя и Телефон получателя.-->
-  <script>
-    (function isRequiredGift() {
-      const fieldsetGift = document.querySelector('[data-certificates="gift"]');
-      const inputsGift =  Array.from(fieldsetGift.document.querySelectorAll('input'));
-
-      inputsGift.forEach((input) => input.setAttribute('required', ''));
-    })()
-  </script>
-
-  <!--При клике на кнопку Перейти к оплате должна происходить валидация формы.-->
-  <script>
-    (function getValidateForm () {
-      const fieldsetGift = document.querySelector('[data-certificates="gift"]');
-      const inputs = document.querySelectorAll('.custom-input input');
-      const inputsGift =  Array.from(fieldsetGift.querySelectorAll('input'));
-      const giftToggle = document.querySelector('[data-certificates="toggle"] input[type="checkbox"]');
-
-      // const name = document.getElementById('name');
-      // const phone = document.getElementById('phone');
-      // const email =  document.getElementById('email');
-
-      // const nameGift = document.getElementById('name-gift');
-      // const phoneGift = document.getElementById('phone-gift');
-      // const message = document.getElementById('message');
-
-      const isNotEmpty = (arrInputs) => {
-         return Array.from(arrInputs).every((input) => input.value.trim() !== '' );
-      };
-
-      const  isRequiredInputs = (arrInputs) => {
-        return  Array.from(arrInputs).every((input) => input.required);
-      }
-
-      const isValid = () => {
-        if(giftToggle && giftToggle.checked) {
-          return(
-            isNotEmpty(inputs) &&
-            isNotEmpty(inputsGift)&&
-            isRequiredInputs(inputs) &&
-            isRequiredInputs(inputsGift)
-            ? true : false
-          );
-        } else {
-          return  isNotEmpty(inputs) && isRequiredInputs (inputs) ? true : false
-        }
-      };
-
-      const form = document.querySelector('form');
-      const formButton = document.querySelector('.btn form__desktop');
-
-
-      form.addEventListener('submit', async(evt) => {
-        evt.preventDefault();
-
-        const formData = new FormData(form);
-
-        if(!isValid()) {
-          form.reportValidity();
-          return;
-        }
-
-        try {
-          const response = await fetch('/api/buy/certificate', {
-            method: 'POST',
-            body: formData
+          Array.from(radios).forEach((radio) => {
+            radio.addEventListener('change', updatePrice);
           });
-          if(response.ok) {
-            window.location.href ='/certificates-success.html'
-          } else {
-            window.location.href = '/certificates-error.html'
+        })();
+
+      // <!--Выбор ориентации сертификата осуществляется с помощью радиокнопок вертикальная и горизонтальна-->
+        (function setOrientation () {
+          const modalCertificate = document.querySelector('.modal-certificate');
+
+          const verticalInput = document.querySelector('input[value="vertical"]');
+          const horisontInput = document.querySelector('input[value="horizontal"]');
+
+          verticalInput.addEventListener('change', (evt) => {
+          if(evt.target.checked) {
+            modalCertificate.classList.remove('is-horizontal');
+            modalCertificate.classList.add('is-vertical')
+          };
+          });
+
+        horisontInput.addEventListener('change', (evt) => {
+
+          if(evt.target.checked) {
+            modalCertificate.classList.remove('is-vertical');
+            modalCertificate.classList.add('is-horizontal')
+          }
+        })
+      })();
+      // <!--Чекбокс Хочу физический сертификат передаёт значение в форму далее, вид интерфейса не меняет. ?-->
+
+      // <!--Чекбокс Сертификат в подарок открывает дополнительные пункты формы-->
+
+      (function openGiftForm () {
+          const giftForm = document.querySelector('[data-certificates="gift"]');
+          const giftCheckBox =  document.querySelector('[data-certificates="toggle"] input[type="checkbox"]');
+
+          giftCheckBox.addEventListener('change', (evt) => {
+            if(evt.target.checked) {
+              giftForm.classList.remove('certificates__fieldset--gift');
+            } else {
+              giftForm.classList.add('certificates__fieldset--gift');
+            }
+          })
+        })();
+
+
+      // <!---В сертификат подставляются данные из формы (сумма сертификата и имя), -->
+
+      (function setNameAndPrice () {
+          const priceInputs  = document.getElementsByName('certificate-option');
+
+          const nameGiftInput = document.getElementById('name-gift');
+          const messageInput = document.getElementById('message');
+
+          const modalCertificatePrice = document.querySelector('.modal-certificate__price');
+          const modalCertificateMessage = document.querySelector('.modal-certificate__message');
+
+          const giftCheckBox =  document.querySelector('[data-certificates="toggle"] input[type="checkbox"]');
+
+
+          const updateCertificatePrice = () => {
+            const selectedInput = Array.from(priceInputs).find(input => input.checked);
+            const price = selectedInput ? Number(selectedInput.value).toLocaleString('ru-RU') : '50 000';
+            modalCertificatePrice.textContent = price;
+          };
+
+          Array.from(priceInputs).forEach((input) => {
+            input.addEventListener('change', updateCertificatePrice)
+          });
+
+          const updateCertificateNameAndMessage = () => {
+            const name = nameGiftInput.value;
+            const message =  messageInput.value;
+
+            if(giftCheckBox.checked) {
+              if (name && message) {
+                modalCertificateMessage.textContent =  `${name}, ${message}`
+              } else {
+                modalCertificateMessage.textContent =  `${name}`
+              }
+            } else {
+              modalCertificateMessage.textContent = ''
+            }
+          };
+
+          nameGiftInput.addEventListener('input', updateCertificateNameAndMessage);
+          messageInput.addEventListener('input', updateCertificateNameAndMessage)
+
+          document.addEventListener('DOMContentLoaded',  () => {
+            updateCertificatePrice();
+            updateCertificateNameAndMessage();
+          });
+        })();
+
+      // <!--Обязательными полями для заполнения являются: Ваши имя и фамилия, Телефон, Email. Если выбрано условие сертификат в подарок, то обязательными становятся дополнительные поля Имя получателя и Телефон получателя. -->
+
+      (function isRequired() {
+          const inputs = document.querySelectorAll('.custom-input input');
+
+          Array.from(inputs).forEach((input) => input.setAttribute('required', ''));
+        })();
+
+      // <!--Если выбрано условие сертификат в подарок, то обязательными становятся дополнительные поля Имя получателя и Телефон получателя.-->
+
+        (function isRequiredGift() {
+          const fieldsetGift = document.querySelector('[data-certificates="gift"]');
+          const inputsGift =  Array.from(fieldsetGift.querySelectorAll('input'));
+
+          inputsGift.forEach((input) => input.setAttribute('required', ''));
+        })();
+
+
+      // <!--При клике на кнопку Перейти к оплате должна происходить валидация формы.-->
+
+        (function SendForm () {
+          const priceInputs  = document.getElementsByName('certificate-option');
+
+          const fieldsetGift = document.querySelector('[data-certificates="gift"]');
+          const inputs = document.querySelectorAll('.custom-input input');
+          const inputsGift =  Array.from(fieldsetGift.querySelectorAll('input'));
+          const giftToggle = document.querySelector('[data-certificates="toggle"] input[type="checkbox"]');
+
+          const name = document.getElementById('name');
+          const phone = document.getElementById('phone');
+          const email =  document.getElementById('email');
+
+          const nameGift = document.getElementById('name-gift');
+          const phoneGift = document.getElementById('phone-gift');
+          const message = document.getElementById('message');
+
+          const verticalInput = document.querySelector('input[value="vertical"]');
+          const horisontInput = document.querySelector('input[value="horizontal"]');
+
+          const isNotEmpty = (arrInputs) => {
+            return Array.from(arrInputs).every((input) => input.value.trim() !== '' );
+          };
+
+          const  isRequiredInputs = (arrInputs) => {
+            return  Array.from(arrInputs).every((input) => input.required);
           }
 
-        } catch(error) {
-          console.error('Error:',error);
-          window.location.href = '/certificates-error.html'
-        }
+          const isValid = () => {
+            if(giftToggle && giftToggle.checked) {
+              return(
+                isNotEmpty(inputs) &&
+                isNotEmpty(inputsGift)&&
+                isRequiredInputs(inputs) &&
+                isRequiredInputs(inputsGift)
+                ? true : false
+              );
+            } else {
+              return  isNotEmpty(inputs) && isRequiredInputs (inputs) ? true : false
+            }
+          };
 
-      });
+          const OrientMap = {
+            Vertical: 'vertical',
+            Horizontal: 'horizontal'
+          };
 
-    })()
-  </script>
-  </script>
+          const updateOrient = (verticalInput) => {
+            return verticalInput.checked ? OrientMap.Vertical : OrientMap.Horizontal;
+          };
+
+          const getSelectedCertificatePrice = () => {
+            const selectedInput = Array.from(priceInputs).find(input => input.checked);
+            return selectedInput ? Number(selectedInput.value) : 0
+          };
+
+          const form = document.querySelector('form');
+          const formButton = document.querySelector('.btn form__desktop');
+
+
+          form.addEventListener('submit', async(evt) => {
+            evt.preventDefault();
+
+            const sum = getSelectedCertificatePrice();
+            const orientation = updateOrient(verticalInput);
+
+            const formData = {
+              sum: sum,
+              orientation: orientation,
+              payer: {
+                  name: name.value,
+                  phone: phone.value,
+                  email: email.value
+              },
+              client: {
+                  name: nameGift.value,
+                  phone: phoneGift.value,
+                  comment: message.value
+            }};
+
+            if(!isValid()) {
+              form.reportValidity();
+              return;
+            }
+
+            try {
+              const response = await fetch('/api/buy/certificate', {
+                method: 'POST',
+                headers:{ 'Content-Type': 'application/json'},
+                body: JSON.stringify(formData)
+              });
+              if(response.ok) {
+                window.location.href ='/certificates-success.html'
+              } else {
+                window.location.href = '/certificates-error.html'
+              }
+
+            } catch(error) {
+              console.error('Error:',error);
+              window.location.href = '/certificates-error.html'
+            }
+          });
+        })();
+    </script>
+
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=bac9c797-f5b3-4580-939d-ff7fdca06b5a&amp;lang=ru_RU"></script>
+    <script src="js/vendor.min.js"></script>
+    <script src="js/main.min.js"></script>
   </body>
 </html>
