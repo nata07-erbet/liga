@@ -1139,6 +1139,9 @@
   <!--Данные о свободных датах и времени должны подгружаться из api.-->
     <script>
       (function api () {
+        let flatpickrInstance = null;
+        const limitInit = 30;
+        const requestedDates = new Set();
 
         const getDate = (date) => {
           const yeardateInit = date.getFullYear().toString();
@@ -1148,16 +1151,10 @@
           const dateInit = `${yeardateInit}-${mounthdateInit}-${daydateInit}`;
           return dateInit;
         };
-
         const dateToDay  = new Date();
         const dateToDayParam = getDate(dateToDay);
-
         // const limit = limitInput ? Number(limitInput) : 30;
-        const limitInit = 30;
         // const limitParam = limit > 60 ? 60 : limit;
-
-        const requestedDates = new Set();
-
         async function getTimesIntervals () {
         try {
           const response = await fetch('/api/times');
@@ -1189,7 +1186,9 @@
           }
         };
 
-        async function getDataFromMounth (currentDate) {
+        async function getDataFromMounth (currentDateObj) {
+          const currentDate = getDate(currentDateObj);
+
           try {
             if(requestedDates.has(currentDate)) {
               return
@@ -1199,11 +1198,10 @@
                 throw new Error();
               };
 
-              requestedDates.add(currentDate);
               const data = await response.json();
-              Array.isArray(data) ? data : [];
-
-              return data;
+              const enabledDates = Array.isArray(data) ? data : [];
+              flatpickrInstance.set('enable', enabledDates);
+              requestedDates.add(currentDate);
           }
 
           } catch(error){
@@ -1218,15 +1216,6 @@
           const times  =  await getTimesIntervals();
           const calendar = await getCalendar();
 
-          const getDate = (date) => {
-          const yeardateInit = date.getFullYear().toString();
-          const mounthdateInit = (date.getMonth() + 1).toString().padStart(2,'0');
-          const daydateInit = date.getDate().toString().padStart(2,'0');
-
-          const dateInit = `${yeardateInit}-${mounthdateInit}-${daydateInit}`;
-          return dateInit;
-        };
-
           const dateToDay  = new Date();
           const disableBeforeToday = [{
             from: '1900-01-01',
@@ -1235,17 +1224,22 @@
 
           const availableDates = calendar ? calendar : [];
 
-          if(!inputDateTime.classList.contains('visually-hidden')) {
-            flatpickr(inputDateTime, {
+          flatpickrInstance = flatpickr(inputDateTime, {
             dateFormat: 'Y-m-d',
             defaultDate: null,
             disable: disableBeforeToday,
-            enable: calendar,
+            // enable: calendar,
             inline: true,
+            enableTime: true,
+            minTime: '16:00',
+            maxTime: '22:00',
+            onMonthChange: (selectedDates, dateStr, instance) => {
+              const selectedDate = selectedDates[0];
+              const nextMonth = new Date(instance.currentYear, instance.currentMonth, 1);
+
+              getDataFromMounth(nextMonth);
+            },
             })
-          } else {
-            alert('❌ Элемент скрыт через visually-hidden');
-          }
       });
 
       })();
