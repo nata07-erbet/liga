@@ -115,6 +115,9 @@ block main
                       +booking-info({isCertificate: true})(data-info-type="certificate")
                 +booking-widget({btnText: "внести предоплату 20 000 ₽", btnTextMob: "внести предоплату 20 000 ₽", btnType: "submit"})
 
+  script
+    include ../../js/booking.js
+
 block modals
   +modal("modal--no-scale modal--bath")(data-modal="bath")
     +modal-bath()
