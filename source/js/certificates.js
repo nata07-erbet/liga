@@ -7,45 +7,45 @@
 
 (function getDataPrice() {
   window.addEventListener('DOMContentLoaded', () => {
-    const dataPriceValue = document.querySelector('[data-price-value]');
-    const radios = document.getElementsByName('certificate-option');
+    const dataPriceValue = document.querySelector("[data-price-value]");
+    const radios = document.getElementsByName("certificate-option");
 
     function updatePrice() {
       const selectedRadio = document.querySelector(
-        'input[name='certificate-option']:checked'
+        'input[name="certificate-option"]:checked'
       );
       if (dataPriceValue && selectedRadio) {
         dataPriceValue.textContent =
-          Number(selectedRadio.value).toLocaleString('ru-RU') + ' ₽';
+          Number(selectedRadio.value).toLocaleString("ru-RU") + " ₽";
       }
     };
 
     updatePrice();
 
     Array.from(radios).forEach((radio) => {
-      radio.addEventListener('change', updatePrice);
+      radio.addEventListener("change", updatePrice);
     });
   })
 })();
 
 (function setOrientation() {
   window.addEventListener('DOMContentLoaded', () => {
-    const modalCertificate = document.querySelector('.modal-certificate');
+    const modalCertificate = document.querySelector(".modal-certificate");
 
-    const verticalInput = document.querySelector('input[value='vertical']');
-    const horisontInput = document.querySelector('input[value='horizontal']');
+    const verticalInput = document.querySelector('input[value="vertical"]');
+    const horisontInput = document.querySelector('input[value="horizontal"]');
 
-    verticalInput.addEventListener('change', (evt) => {
+    verticalInput.addEventListener("change", (evt) => {
       if (evt.target.checked) {
-        modalCertificate.classList.remove('is-horizontal');
-        modalCertificate.classList.add('is-vertical');
+        modalCertificate.classList.remove("is-horizontal");
+        modalCertificate.classList.add("is-vertical");
       }
     });
 
-    horisontInput.addEventListener('change', (evt) => {
+    horisontInput.addEventListener("change", (evt) => {
       if (evt.target.checked) {
-        modalCertificate.classList.remove('is-vertical');
-        modalCertificate.classList.add('is-horizontal');
+        modalCertificate.classList.remove("is-vertical");
+        modalCertificate.classList.add("is-horizontal");
       }
     });
   });
@@ -54,16 +54,16 @@
 
 (function openGiftForm() {
   window.addEventListener('DOMContentLoaded', () => {
-    const giftForm = document.querySelector('[data-certificates='gift']');
+    const giftForm = document.querySelector('[data-certificates="gift"]');
     const giftCheckBox = document.querySelector(
-    '[data-certificates='toggle'] input[type='checkbox']'
+    '[data-certificates="toggle"] input[type="checkbox"]'
   );
 
-  giftCheckBox.addEventListener('change', (evt) => {
+  giftCheckBox.addEventListener("change", (evt) => {
     if (evt.target.checked) {
-      giftForm.classList.remove('certificates__fieldset--gift');
+      giftForm.classList.remove("certificates__fieldset--gift");
     } else {
-      giftForm.classList.add('certificates__fieldset--gift');
+      giftForm.classList.add("certificates__fieldset--gift");
     }
   });
   })
@@ -72,20 +72,20 @@
 
 (function setNameAndPrice() {
   window.addEventListener('DOMContentLoaded', () => {
-    const priceInputs = document.getElementsByName('certificate-option');
+    const priceInputs = document.getElementsByName("certificate-option");
 
-  const nameGiftInput = document.getElementById('name-gift');
-  const messageInput = document.getElementById('message');
+  const nameGiftInput = document.getElementById("name-gift");
+  const messageInput = document.getElementById("message");
 
   const modalCertificatePrice = document.querySelector(
-    '.modal-certificate__price'
+    ".modal-certificate__price"
   );
   const modalCertificateMessage = document.querySelector(
-    '.modal-certificate__message'
+    ".modal-certificate__message"
   );
 
   const giftCheckBox = document.querySelector(
-    '[data-certificates='toggle'] input[type='checkbox']'
+    '[data-certificates="toggle"] input[type="checkbox"]'
   );
 
   const updateCertificatePrice = () => {
@@ -93,13 +93,13 @@
       (input) => input.checked
     );
     const price = selectedInput
-      ? Number(selectedInput.value).toLocaleString('ru-RU')
-      : '50 000';
+      ? Number(selectedInput.value).toLocaleString("ru-RU")
+      : "50 000";
     modalCertificatePrice.textContent = price;
   };
 
   Array.from(priceInputs).forEach((input) => {
-    input.addEventListener('change', updateCertificatePrice);
+    input.addEventListener("change", updateCertificatePrice);
   });
 
   const updateCertificateNameAndMessage = () => {
@@ -113,12 +113,12 @@
         modalCertificateMessage.textContent = `${name}`;
       }
     } else {
-      modalCertificateMessage.textContent = '';
+      modalCertificateMessage.textContent = "";
     }
   };
 
-  nameGiftInput.addEventListener('input', updateCertificateNameAndMessage);
-  messageInput.addEventListener('input', updateCertificateNameAndMessage);
+  nameGiftInput.addEventListener("input", updateCertificateNameAndMessage);
+  messageInput.addEventListener("input", updateCertificateNameAndMessage);
 
   updateCertificatePrice();
   updateCertificateNameAndMessage();
@@ -137,10 +137,10 @@
 
 (function isRequiredGift() {
   window.addEventListener('DOMContentLoaded', () => {
-    const fieldsetGift = document.querySelector('[data-certificates='gift']');
-    const inputsGift = Array.from(fieldsetGift.querySelectorAll('input'));
+    const fieldsetGift = document.querySelector('[data-certificates="gift"]');
+    const inputsGift = Array.from(fieldsetGift.querySelectorAll("input"));
 
-    inputsGift.forEach((input) => input.setAttribute('required', ''));
+    inputsGift.forEach((input) => input.setAttribute("required", ""));
 
   })
 })();
@@ -149,28 +149,28 @@
 
 (function SendForm() {
   window.addEventListener('DOMContentLoaded', () => {
-    const priceInputs = document.getElementsByName('certificate-option');
+    const priceInputs = document.getElementsByName("certificate-option");
 
-  const fieldsetGift = document.querySelector('[data-certificates='gift']');
-  const inputs = document.querySelectorAll('.custom-input input');
-  const inputsGift = Array.from(fieldsetGift.querySelectorAll('input'));
+  const fieldsetGift = document.querySelector('[data-certificates="gift"]');
+  const inputs = document.querySelectorAll(".custom-input input");
+  const inputsGift = Array.from(fieldsetGift.querySelectorAll("input"));
   const giftToggle = document.querySelector(
-    '[data-certificates='toggle'] input[type='checkbox']'
+    '[data-certificates="toggle"] input[type="checkbox"]'
   );
 
-  const name = document.getElementById('name');
-  const phone = document.getElementById('phone');
-  const email = document.getElementById('email');
+  const name = document.getElementById("name");
+  const phone = document.getElementById("phone");
+  const email = document.getElementById("email");
 
-  const nameGift = document.getElementById('name-gift');
-  const phoneGift = document.getElementById('phone-gift');
-  const message = document.getElementById('message');
+  const nameGift = document.getElementById("name-gift");
+  const phoneGift = document.getElementById("phone-gift");
+  const message = document.getElementById("message");
 
-  const verticalInput = document.querySelector('input[value='vertical']');
-  const horisontInput = document.querySelector('input[value='horizontal']');
+  const verticalInput = document.querySelector('input[value="vertical"]');
+  const horisontInput = document.querySelector('input[value="horizontal"]');
 
   const isNotEmpty = (arrInputs) => {
-    return Array.from(arrInputs).every((input) => input.value.trim() !== '');
+    return Array.from(arrInputs).every((input) => input.value.trim() !== "");
   };
 
   const isRequiredInputs = (arrInputs) => {
@@ -191,8 +191,8 @@
   };
 
   const OrientMap = {
-    Vertical: 'vertical',
-    Horizontal: 'horizontal',
+    Vertical: "vertical",
+    Horizontal: "horizontal",
   };
 
   const updateOrient = (verticalInput) => {
@@ -206,10 +206,10 @@
     return selectedInput ? Number(selectedInput.value) : 0;
   };
 
-  const form = document.querySelector('form');
-  const formButton = document.querySelector('.btn form__desktop');
+  const form = document.querySelector("form");
+  const formButton = document.querySelector(".btn form__desktop");
 
-  form.addEventListener('submit', function (evt) {
+  form.addEventListener("submit", function (evt) {
     evt.preventDefault();
 
     const sum = getSelectedCertificatePrice();
@@ -234,25 +234,26 @@
       form.reportValidity();
       return;
     }
-
+78
     async function postData () {
       try {
-        const response = await fetch('/api/buy/certificate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const response = await fetch("/api/buy/certificate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
         if (response.ok) {
-          window.location.href = '/certificates-success.html';
+          window.location.href = "/certificates-success.html";
         } else {
-          window.location.href = '/certificates-error.html';
+          window.location.href = "/certificates-error.html";
         }
       } catch (error) {
-        console.error('Error:', error);
-        window.location.href = '/certificates-error.html';
+        console.error("Error:", error);
+        window.location.href = "/certificates-error.html";
       }
     }
     postData();
   });
   })
+
 })();
