@@ -739,9 +739,8 @@ async function loadBath () {
     console.warn('Нет данных о банях или неверный формат');
     return;
   };
-  console.log(result);
 
-  const bathes = mockBathes.data;
+  const bathes = result.data;
   if (BathContainer) {
     bathes.forEach((bath) => {
       const bathCard = bathCardTemplate(bath);
@@ -933,7 +932,7 @@ async function loadBath () {
       if(!isValidInput(babyInput.value)) {
         alert('Вводите только цифры');
       } else {
-        pdateBathAvailability();
+        updateBathAvailability();
       }
     })
   });
@@ -987,8 +986,7 @@ async function loadBath () {
     }
   };
 
-  async function getDataFromMounth (currentDateObj) {
-    const currentDate = getDate(currentDateObj);
+  async function getDataFromMounth (currentDate) {
 
     try {
       if(requestedDates.has(currentDate)) {
@@ -999,9 +997,16 @@ async function loadBath () {
           throw new Error();
         };
 
-        const data = await response.json();
+        const result = await response.json();
+
+        const freeDates =  Object
+          .entries(result.data)
+          .filter(([date, info]) => info.status !== 2)
+          .map(([date]) => date);
+
         const enabledDates = Array.isArray(data) ? data : [];
-        flatpickrInstance.set('enable', enabledDates);
+
+        flatpickrInstance.set('enable', freeDates);
         requestedDates.add(currentDate);
     }
 
@@ -1014,8 +1019,14 @@ async function loadBath () {
     const inputDateTime = document.getElementById('date-and-time');
       inputDateTime.classList.remove('visually-hidden');
 
-      const times  =  await getTimesIntervals();
-      const calendar = await getCalendar();
+      const calendarResponse = await getCalendar();
+      const calendar = calendarResponse.data;
+
+      const freDates = Object
+        .entries(calendar)
+        .filter(([date, info]) => info.status !== 2 )
+        .map(([date]) => date);
+
 
       const dateToDay  = new Date();
       const disableBeforeToday = [{
@@ -1023,13 +1034,13 @@ async function loadBath () {
         to: getDate(dateToDay),
       }];
 
-      const availableDates = calendar ? calendar : [];
+      const availableDates = freDates ? freDates : [];
 
       flatpickrInstance = flatpickr(inputDateTime, {
         dateFormat: 'Y-m-d',
         defaultDate: null,
         disable: disableBeforeToday,
-        // enable: calendar,
+        enable: freDates,
         inline: true,
         enableTime: true,
         minTime: '16:00',
@@ -1040,6 +1051,9 @@ async function loadBath () {
 
           getDataFromMounth(nextMonth);
         },
+        onClick : () => {
+          renderBathList();
+        }
         });
   });
 
