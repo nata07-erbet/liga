@@ -619,6 +619,34 @@ const mockBath = `{
   "error": null
 }`;
 
+const timeSlotsJSON = `{
+  "data": [
+    {
+      "id": 1,
+      "interval": {
+        "begin": "10:00",
+        "end": "14:00"
+      }
+    },
+    {
+      "id": 2,
+      "interval": {
+        "begin": "15:00",
+        "end": "19:00"
+      }
+    },
+    {
+      "id": 3,
+      "interval": {
+        "begin": "20:00",
+        "end": "00:00"
+      }
+    }
+  ],
+  "error": null
+}`;
+
+const timeSlotsMock = JSON.parse(timeSlotsJSON);
 const mockBathes = JSON.parse(mockBath);
 
 const renderElement = (container, component, place = 'beforeend') => {
@@ -667,6 +695,17 @@ const bathCardTemplate = (bath) => {
           </div>`;
 };
 
+const timeSlotTemplate = ({id, interval}) => {
+  // return `<button class="time-slot" type="button" data-time="slot" data-time-id=${id}>
+  //           <span class="text text--small-caps">${interval.begin} — ${interval.end}</span>
+  //         </button>`;
+  return `<div class="time-slot" data-time="slot" data-time-id=${id}>
+            <input class="visually-hidden" type="radio" value="${interval.begin} — ${interval.end}" id="time-${id}" name="time-choice">
+            <label for="time-${id}">
+            <span class="text text--small-caps">${interval.begin} — ${interval.end}</span>
+            </label>
+          </div>`;
+};
 
 (function () {
   document.addEventListener('DOMContentLoaded', () => {
@@ -721,6 +760,7 @@ async function loadBath () {
     })
   })
 })();
+
 (function getGuestQuantity() {
   document.addEventListener('DOMContentLoaded', () => {
     const decreaseButtonAdults = document.querySelector('div[data-counter-type="adults"] button[data-counter="decrease"]');
@@ -970,36 +1010,66 @@ async function loadBath () {
     }
 };
 
-window.addEventListener('DOMContentLoaded', async () => {
-  const inputDateTime = document.getElementById('date-and-time');
-    inputDateTime.classList.remove('visually-hidden');
+  window.addEventListener('DOMContentLoaded', async () => {
+    const inputDateTime = document.getElementById('date-and-time');
+      inputDateTime.classList.remove('visually-hidden');
 
-    const times  =  await getTimesIntervals();
-    const calendar = await getCalendar();
+      const times  =  await getTimesIntervals();
+      const calendar = await getCalendar();
 
-    const dateToDay  = new Date();
-    const disableBeforeToday = [{
-      from: '1900-01-01',
-      to: getDate(dateToDay),
-    }];
+      const dateToDay  = new Date();
+      const disableBeforeToday = [{
+        from: '1900-01-01',
+        to: getDate(dateToDay),
+      }];
 
-    const availableDates = calendar ? calendar : [];
+      const availableDates = calendar ? calendar : [];
 
-    flatpickrInstance = flatpickr(inputDateTime, {
-      dateFormat: 'Y-m-d',
-      defaultDate: null,
-      disable: disableBeforeToday,
-      // enable: calendar,
-      inline: true,
-      enableTime: true,
-      minTime: '16:00',
-      maxTime: '22:00',
-      onMonthChange: (selectedDates, dateStr, instance) => {
-        const selectedDate = selectedDates[0];
-        const nextMonth = new Date(instance.currentYear, instance.currentMonth, 1);
+      flatpickrInstance = flatpickr(inputDateTime, {
+        dateFormat: 'Y-m-d',
+        defaultDate: null,
+        disable: disableBeforeToday,
+        // enable: calendar,
+        inline: true,
+        enableTime: true,
+        minTime: '16:00',
+        maxTime: '22:00',
+        onMonthChange: (selectedDates, dateStr, instance) => {
+          const selectedDate = selectedDates[0];
+          const nextMonth = new Date(instance.currentYear, instance.currentMonth, 1);
 
-        getDataFromMounth(nextMonth);
-      },
-      })
-});
+          getDataFromMounth(nextMonth);
+        },
+        });
+  });
+
+  (async function renderTimeSlots () {
+    const result = await getTimesIntervals();
+    const selectDateContainer = document.querySelector('.select-date__time-slots');
+
+    const isLoadedSlots = result && Array.isArray(result.data) && result.data.length > 0;
+
+    if (isLoadedSlots) {
+      const slots = result.data;
+
+      if (selectDateContainer) {
+        slots.forEach(({ id, interval }) => {
+          const timeSlot = timeSlotTemplate({ id, interval });
+          renderElement(selectDateContainer, timeSlot);
+        });
+      }
+    } else {
+      console.warn('Нет данных о банях или неверный формат. Используем mock.');
+      const slotsMock = timeSlotsMock.data;
+
+      if (selectDateContainer) {
+        slotsMock.forEach(({ id, interval }) => {
+          const timeSlotMock = timeSlotTemplate({ id, interval });
+          renderElement(selectDateContainer, timeSlotMock);
+        });
+      }
+    }
+  })();
 })();
+
+
