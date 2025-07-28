@@ -653,6 +653,62 @@ const renderElement = (container, component, place = 'beforeend') => {
   container.insertAdjacentHTML(place, component);
 };
 
+const calendar = document.querySelector('[data-calendar]');
+let flatpickr;
+let startX = null;
+let endX = null;
+let startY = null;
+let endY = null;
+
+const onTouchStart = (e) => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+
+  document.addEventListener('touchmove', onTouchMove);
+};
+
+const getDeltaX = () => {
+  return startX - endX;
+};
+
+const getDeltaY = () => {
+  return startY - endY;
+};
+
+const onTouchEnd = (e) => {
+  e.preventDefault();
+
+  if (Math.abs(getDeltaX()) < Math.abs(getDeltaY())) {
+    return;
+  }
+
+  if (getDeltaX() > 0) {
+    flatpickr.changeMonth(1);
+  } else {
+    flatpickr.changeMonth(-1);
+  }
+
+  document.removeEventListener('touchmove', onTouchMove);
+};
+
+const onTouchMove = (e) => {
+  e.preventDefault();
+
+  endX = e.touches[0].clientX;
+  endY = e.touches[0].clientY;
+};
+
+const initCalendarSwipe = (flatpickrInstance) => {
+  if (!calendar) {
+    return;
+  }
+
+  flatpickr = flatpickrInstance;
+
+  calendar.addEventListener('touchstart', onTouchStart);
+  window.addEventListener('touchend', onTouchEnd);
+};
+
 const bathCardTemplate = (bath) => {
   return `<div class="bath-option" data-min=${bath.guest.min} data-max=${bath.guest.max} data-guest-min=${bath.guestMin}>
             <input class="visually-hidden" type="radio" value=${bath.id} id=${bath.id} name="bath-choice">
@@ -1016,74 +1072,131 @@ async function loadBath () {
 };
 
   window.addEventListener('DOMContentLoaded', async () => {
+    const dataCalendarContainer = document.querySelector('.data-calendar');
+
+    const dateToDay  = new Date();
     const inputDateTime = document.getElementById('date-and-time');
-      inputDateTime.classList.remove('visually-hidden');
+    inputDateTime.classList.remove('visually-hidden');
 
-      const calendarResponse = await getCalendar();
-      const calendar = calendarResponse.data;
+    const calendarResponse = await getCalendar();
+    const calendar = calendarResponse.data;
 
-      const freDates = Object
+    const freDates = Object
         .entries(calendar)
-        .filter(([date, info]) => info.status !== 2 )
+        .filter(([date, info]) => info.status === 3 )
+        .map(([date]) => date);
+
+    const busyDates = Object
+        .entries(calendar)
+        .filter(([ data, info ]) => info.status === 0 || info.status === 1 || info.status === 2)
         .map(([date]) => date);
 
 
-      const dateToDay  = new Date();
-      const disableBeforeToday = [{
+    const disableBeforeToday = [{
         from: '1900-01-01',
         to: getDate(dateToDay),
       }];
 
-      const availableDates = freDates ? freDates : [];
+    const notAvailableDates = [...busyDates, ...disableBeforeToday];
+    const availableDates = freDates ? freDates : [];
 
-      flatpickrInstance = flatpickr(inputDateTime, {
+    const renderCalendar = () => {
+      const input = dataCalendarContainer.querySelector('input');
+      const nextArrowSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">  <path d="M10 17.5L15 12.5M10 17.5L5 12.5M10 17.5L10 1.66669" stroke="currentColor" stroke-linecap="round"/>  </svg>';
+      const prevArrowSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 17.5L15 12.5M10 17.5L5 12.5M10 17.5L10 1.66669" stroke="currentColor" stroke-linecap="round"/></svg>';
+      let flag = true;
+
+      async function renderTimeSlots () {
+        const result = await getTimesIntervals();
+        const selectDateContainer = document.querySelector('[data-time="parent"]');
+
+        const isLoadedSlots = result && Array.isArray(result.data) && result.data.length > 0;
+
+        if (isLoadedSlots) {
+          const slots = result.data;
+
+          if (selectDateContainer) {
+            slots.forEach(({ id, interval }) => {
+              const timeSlot = timeSlotTemplate({ id, interval });
+              renderElement(selectDateContainer, timeSlot);
+            });
+          }
+        } else {
+          console.warn('Нет данных о банях или неверный формат. Используем mock.');
+          const slotsMock = timeSlotsMock.data;
+
+          if (selectDateContainer) {
+            slotsMock.forEach(({ id, interval }) => {
+              const timeSlotMock = timeSlotTemplate({ id, interval });
+              renderElement(selectDateContainer, timeSlotMock);
+            });
+          }
+        }
+      };
+
+
+      calendar = flatpickr(input, {
         dateFormat: 'Y-m-d',
         defaultDate: null,
-        disable: disableBeforeToday,
-        enable: freDates,
+        conjunction: ' - ',
+        minDate: 'today',
+        maxDate: new Date().fp_incr(maxDays),
+        disable: notAvailableDates,
+        nextArrow: nextArrowSvg,
+        prevArrow: prevArrowSvg,
         inline: true,
-        enableTime: true,
-        minTime: '16:00',
-        maxTime: '22:00',
+        position: 'auto center',
+        monthSelectorType: 'static',
+        locale: {
+          firstDayOfWeek: 1
+        },
         onMonthChange: (selectedDates, dateStr, instance) => {
           const selectedDate = selectedDates[0];
           const nextMonth = new Date(instance.currentYear, instance.currentMonth, 1);
 
+          selectDateContainer.innerHTML = '';
+          renderTimeSlots();
+
+          initCalendarSwipe(calendar);
+
           getDataFromMounth(nextMonth);
         },
-        onClick : () => {
-          renderBathList();
-        }
+        onChange: () => {
+          if (flag) {
+            let activeTime;
+            let id;
+
+            if (container.querySelector('input:checked')) {
+              activeTime = container.querySelector('input:checked').closest('[data-time="slot"]');
+              id = activeTime.dataset.timeId;
+            }
+
+            container.innerHTML = '';
+            renderTimesSlots();
+
+            if (activeTime && !container.querySelector(`[data-time-id="${id}"]`).hasAttribute('disabled')) {
+              container.querySelector(`[data-time-id="${id}"] input`).checked = true;
+            }
+
+            flag = false;
+          }
+
+          if (!breakpoint.matches) {
+            window.accordions.updateAccordionsHeight();
+          }
+        },
         });
-  });
 
-  (async function renderTimeSlots () {
-    const result = await getTimesIntervals();
-    const selectDateContainer = document.querySelector('.select-date__time-slots');
 
-    const isLoadedSlots = result && Array.isArray(result.data) && result.data.length > 0;
-
-    if (isLoadedSlots) {
-      const slots = result.data;
-
-      if (selectDateContainer) {
-        slots.forEach(({ id, interval }) => {
-          const timeSlot = timeSlotTemplate({ id, interval });
-          renderElement(selectDateContainer, timeSlot);
-        });
-      }
-    } else {
-      console.warn('Нет данных о банях или неверный формат. Используем mock.');
-      const slotsMock = timeSlotsMock.data;
-
-      if (selectDateContainer) {
-        slotsMock.forEach(({ id, interval }) => {
-          const timeSlotMock = timeSlotTemplate({ id, interval });
-          renderElement(selectDateContainer, timeSlotMock);
-        });
-      }
     }
-  })();
+
+    const initCalendar = () => {
+      if(!dataCalendarContainer) {
+        return;
+      }
+      renderCalendar();
+    };
+
+    initCalendar();
+  });
 })();
-
-

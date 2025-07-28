@@ -9,7 +9,8 @@ let maxDays = 61;
 let calendar;
 
 const renderCalnedar = (disabledDates, firstStep, timeSlots) => {
-  const input = calendarBlock.querySelector('input');
+  const input = document.getElementById('date-and-time');
+
   const nextArrowSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">  <path d="M10 17.5L15 12.5M10 17.5L5 12.5M10 17.5L10 1.66669" stroke="currentColor" stroke-linecap="round"/>  </svg>';
   const prevArrowSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 17.5L15 12.5M10 17.5L5 12.5M10 17.5L10 1.66669" stroke="currentColor" stroke-linecap="round"/></svg>';
   let flag = true;
