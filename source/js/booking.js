@@ -653,62 +653,6 @@ const renderElement = (container, component, place = 'beforeend') => {
   container.insertAdjacentHTML(place, component);
 };
 
-const calendar = document.querySelector('[data-calendar]');
-let flatpickr;
-let startX = null;
-let endX = null;
-let startY = null;
-let endY = null;
-
-const onTouchStart = (e) => {
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-
-  document.addEventListener('touchmove', onTouchMove);
-};
-
-const getDeltaX = () => {
-  return startX - endX;
-};
-
-const getDeltaY = () => {
-  return startY - endY;
-};
-
-const onTouchEnd = (e) => {
-  e.preventDefault();
-
-  if (Math.abs(getDeltaX()) < Math.abs(getDeltaY())) {
-    return;
-  }
-
-  if (getDeltaX() > 0) {
-    flatpickr.changeMonth(1);
-  } else {
-    flatpickr.changeMonth(-1);
-  }
-
-  document.removeEventListener('touchmove', onTouchMove);
-};
-
-const onTouchMove = (e) => {
-  e.preventDefault();
-
-  endX = e.touches[0].clientX;
-  endY = e.touches[0].clientY;
-};
-
-const initCalendarSwipe = (flatpickrInstance) => {
-  if (!calendar) {
-    return;
-  }
-
-  flatpickr = flatpickrInstance;
-
-  calendar.addEventListener('touchstart', onTouchStart);
-  window.addEventListener('touchend', onTouchEnd);
-};
-
 const bathCardTemplate = (bath) => {
   return `<div class="bath-option" data-min=${bath.guest.min} data-max=${bath.guest.max} data-guest-min=${bath.guestMin}>
             <input class="visually-hidden" type="radio" value=${bath.id} id=${bath.id} name="bath-choice">
@@ -995,6 +939,9 @@ async function loadBath () {
 })();
 
 (function api () {
+  const dataCalendarContainer = document.querySelector('[data-calendar]');
+
+  const inputDateTime = document.getElementById('date-and-time');
   let flatpickrInstance = null;
   const limitInit = 30;
   const requestedDates = new Set();
@@ -1070,70 +1017,92 @@ async function loadBath () {
       console.error(error);
     }
 };
-
   window.addEventListener('DOMContentLoaded', async () => {
-    const dataCalendarContainer = document.querySelector('.data-calendar');
-
-    const dateToDay  = new Date();
-    const inputDateTime = document.getElementById('date-and-time');
     inputDateTime.classList.remove('visually-hidden');
 
+    const dateToDay = new Date();
     const calendarResponse = await getCalendar();
-    const calendar = calendarResponse.data;
+    const calendarData = calendarResponse.data;
 
-    const freDates = Object
-        .entries(calendar)
-        .filter(([date, info]) => info.status === 3 )
-        .map(([date]) => date);
+    const freDates = Object.entries(calendarData)
+      .filter(([_, info]) => info.status === 3)
+      .map(([date]) => date);
 
-    const busyDates = Object
-        .entries(calendar)
-        .filter(([ data, info ]) => info.status === 0 || info.status === 1 || info.status === 2)
-        .map(([date]) => date);
-
+    const busyDates = Object.entries(calendarData)
+      .filter(([_, info]) => [0, 1, 2].includes(info.status))
+      .map(([date]) => date);
 
     const disableBeforeToday = [{
-        from: '1900-01-01',
-        to: getDate(dateToDay),
-      }];
+      from: '1900-01-01',
+      to: getDate(dateToDay),
+    }];
 
     const notAvailableDates = [...busyDates, ...disableBeforeToday];
-    const availableDates = freDates ? freDates : [];
+
+    const maxDays = 61;
+    const breakpoint = window.matchMedia('(min-width: 768px)');
+    const container = document.querySelector('[data-time="parent"]');
+    let calendar;
+    let flag = true;
+
+    const renderTimeSlots = async () => {
+      const result = await getTimesIntervals();
+      const selectDateContainer = document.querySelector('[data-time="parent"]');
+      selectDateContainer.innerHTML = ''; // Очистить перед вставкой
+
+      const isLoadedSlots = result && Array.isArray(result.data) && result.data.length > 0;
+
+      const slots = isLoadedSlots ? result.data : timeSlotsMock.data;
+
+      slots.forEach(({ id, interval }) => {
+        const timeSlot = timeSlotTemplate({ id, interval });
+        renderElement(selectDateContainer, timeSlot);
+      });
+    };
+
+    // function initCalendarSwipe(flatpickrInstance) {
+    //   const calendarEl = document.querySelector('[data-calendar]');
+    //   if (!calendarEl) return;
+
+    //   let startX = null;
+    //   let endX = null;
+    //   let startY = null;
+    //   let endY = null;
+
+    //   const getDeltaX = () => startX - endX;
+    //   const getDeltaY = () => startY - endY;
+
+    //   const onTouchStart = (e) => {
+    //     startX = e.touches[0].clientX;
+    //     startY = e.touches[0].clientY;
+    //     document.addEventListener('touchmove', onTouchMove);
+    //   };
+
+    //   const onTouchMove = (e) => {
+    //     e.preventDefault();
+    //     endX = e.touches[0].clientX;
+    //     endY = e.touches[0].clientY;
+    //   };
+
+    //   const onTouchEnd = (e) => {
+    //     e.preventDefault();
+    //     if (Math.abs(getDeltaX()) < Math.abs(getDeltaY())) return;
+    //     if (getDeltaX() > 0) {
+    //       flatpickrInstance.changeMonth(1);
+    //     } else {
+    //       flatpickrInstance.changeMonth(-1);
+    //     }
+    //     document.removeEventListener('touchmove', onTouchMove);
+    //   };
+
+    //   calendarEl.addEventListener('touchstart', onTouchStart);
+    //   window.addEventListener('touchend', onTouchEnd);
+    // }
 
     const renderCalendar = () => {
-      const input = dataCalendarContainer.querySelector('input');
-      const nextArrowSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">  <path d="M10 17.5L15 12.5M10 17.5L5 12.5M10 17.5L10 1.66669" stroke="currentColor" stroke-linecap="round"/>  </svg>';
-      const prevArrowSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 17.5L15 12.5M10 17.5L5 12.5M10 17.5L10 1.66669" stroke="currentColor" stroke-linecap="round"/></svg>';
-      let flag = true;
-
-      async function renderTimeSlots () {
-        const result = await getTimesIntervals();
-        const selectDateContainer = document.querySelector('[data-time="parent"]');
-
-        const isLoadedSlots = result && Array.isArray(result.data) && result.data.length > 0;
-
-        if (isLoadedSlots) {
-          const slots = result.data;
-
-          if (selectDateContainer) {
-            slots.forEach(({ id, interval }) => {
-              const timeSlot = timeSlotTemplate({ id, interval });
-              renderElement(selectDateContainer, timeSlot);
-            });
-          }
-        } else {
-          console.warn('Нет данных о банях или неверный формат. Используем mock.');
-          const slotsMock = timeSlotsMock.data;
-
-          if (selectDateContainer) {
-            slotsMock.forEach(({ id, interval }) => {
-              const timeSlotMock = timeSlotTemplate({ id, interval });
-              renderElement(selectDateContainer, timeSlotMock);
-            });
-          }
-        }
-      };
-
+      const input = document.getElementById('date-and-time');
+      const nextArrowSvg = `<svg width="20" height="20" ...>...</svg>`;
+      const prevArrowSvg = `<svg width="20" height="20" ...>...</svg>`;
 
       calendar = flatpickr(input, {
         dateFormat: 'Y-m-d',
@@ -1150,15 +1119,9 @@ async function loadBath () {
         locale: {
           firstDayOfWeek: 1
         },
-        onMonthChange: (selectedDates, dateStr, instance) => {
-          const selectedDate = selectedDates[0];
+        onMonthChange: (instance) => {
           const nextMonth = new Date(instance.currentYear, instance.currentMonth, 1);
-
-          selectDateContainer.innerHTML = '';
-          renderTimeSlots();
-
-          initCalendarSwipe(calendar);
-
+          renderTimeSlots(); // при смене месяца сбрасываем слоты
           getDataFromMounth(nextMonth);
         },
         onChange: () => {
@@ -1172,7 +1135,7 @@ async function loadBath () {
             }
 
             container.innerHTML = '';
-            renderTimesSlots();
+            renderTimeSlots();
 
             if (activeTime && !container.querySelector(`[data-time-id="${id}"]`).hasAttribute('disabled')) {
               container.querySelector(`[data-time-id="${id}"] input`).checked = true;
@@ -1181,22 +1144,19 @@ async function loadBath () {
             flag = false;
           }
 
-          if (!breakpoint.matches) {
-            window.accordions.updateAccordionsHeight();
+          if (!breakpoint.matches && window.accordions) {
+            window.accordions.updateAccordionsHeight?.();
           }
         },
-        });
+      });
 
-
-    }
-
-    const initCalendar = () => {
-      if(!dataCalendarContainer) {
-        return;
-      }
-      renderCalendar();
+      // initCalendarSwipe(calendar);
     };
 
+    const initCalendar = () => {
+      alert(2);
+      renderCalendar();
+    };
     initCalendar();
   });
 })();
