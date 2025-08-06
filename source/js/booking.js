@@ -1,653 +1,3 @@
-const mockBath = `{
-  "data": [
-    {
-      "id": "nomad",
-      "name": "Баня кочевника",
-      "guest": {
-        "min": 2,
-        "max": 4
-      },
-      "guestMin": 1,
-      "price": "30 000 — 26 667",
-      "cover": {
-        "mobile": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        },
-        "desktop": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        }
-      },
-      "gallery": {
-        "mobile": [
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-1.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-1@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-1.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-2.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-2@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-2.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-3.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-3@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-3.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-4.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-4@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-4.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-5.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-5@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-5.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-6.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-6@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-6.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-6@2x.webp"
-          }
-        ],
-        "desktop": [
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-1.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-1@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-1.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-2.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-2@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-2.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-3.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-3@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-3.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-4.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-4@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-4.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-5.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-5@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-5.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-6.jpg",
-            "jpg2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-6@2x.jpg",
-            "webp": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-6.webp",
-            "webp2x": "img/slides/baths-slider-nomad/desktop/kochevnik-photo-6@2x.webp"
-          }
-        ]
-      },
-      "info": {
-        "description": "Вы ощутите на себе быструю смену климата в местах обитания кочевых народов: прохладный дождь, яркое солнце, теплый сильный ветер.",
-        "table": [
-          {
-            "key": "Пар",
-            "value": "Полынь лимонная, мята болотная, анис, можжевельник"
-          },
-          {
-            "key": "Скрабы",
-            "value": "Медово-травяное крошево, молотый кедровый орех с алтайскими травами"
-          },
-          {
-            "key": "Веники",
-            "value": "Дуб, береза, пихта, можжевельник"
-          },
-          {
-            "key": "Звуки",
-            "value": "Живые звуки — вибратоны, шейкеры"
-          }
-        ]
-      }
-    },
-    {
-      "id": "kurnaya-izba",
-      "name": "Курная изба",
-      "guest": {
-        "min": 2,
-        "max": 3
-      },
-      "guestMin": 1,
-      "price": "30 000 — 26 667",
-      "cover": {
-        "mobile": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        },
-        "desktop": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        }
-      },
-      "gallery": {
-        "mobile": [
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-1.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-1@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-1.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-2.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-2@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-2.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-3.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-3@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-3.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-4.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-4@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-4.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-5.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-5@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-5.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-6.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-6@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-6.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-6@2x.webp"
-          }
-        ],
-        "desktop": [
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-1.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-1@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-1.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-2.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-2@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-2.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-3.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-3@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-3.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-4.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-4@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-4.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-5.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-5@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-5.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-6.jpg",
-            "jpg2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-6@2x.jpg",
-            "webp": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-6.webp",
-            "webp2x": "img/slides/baths-slider-kyrnaia-izba/desktop/kyr-6@2x.webp"
-          }
-        ]
-      },
-      "info": {
-        "description": "Сибирская деревенская баня. Парная из липовой дранки, с ароматом бани по-черному, как у бабушки в деревне. Особый,  целебный, духмяный пар, наполненный запахами трав.",
-        "table": [
-          {
-            "key": "Пар",
-            "value": "Береза, смородина, душица, полынь горькая"
-          },
-          {
-            "key": "Скрабы",
-            "value": "Настой душицы, береза"
-          },
-          {
-            "key": "Веники",
-            "value": "Дуб, береза, липа"
-          },
-          {
-            "key": "Звуки",
-            "value": "Цимбалы, ботало"
-          }
-        ]
-      }
-    },
-    {
-      "id": "healer",
-      "name": "Баня знахаря",
-      "guest": {
-        "min": 3,
-        "max": 6
-      },
-      "guestMin": 1,
-      "price": "30 000 — 26 667",
-      "cover": {
-        "mobile": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        },
-        "desktop": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        }
-      },
-      "gallery": {
-        "mobile": [
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-1.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-1@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-1.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-2.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-2@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-2.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-3.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-3@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-3.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-4.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-4@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-4.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-5.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-5@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-5.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-6.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-6@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-6.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-6@2x.webp"
-          }
-        ],
-        "desktop": [
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-1.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-1@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-1.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-2.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-2@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-2.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-3.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-3@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-3.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-4.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-4@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-4.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-5.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-5@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-5.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-healer/desktop/healer-6.jpg",
-            "jpg2x": "img/slides/baths-slider-healer/desktop/healer-6@2x.jpg",
-            "webp": "img/slides/baths-slider-healer/desktop/healer-6.webp",
-            "webp2x": "img/slides/baths-slider-healer/desktop/healer-6@2x.webp"
-          }
-        ]
-      },
-      "info": {
-        "description": "Дубовая парная с ароматами сибирского разнотравья и звукотерапия в специальной фито-комнате.",
-        "table": [
-          {
-            "key": "Пар",
-            "value": "Прополисный положок, донник, таволга, мята лесная"
-          },
-          {
-            "key": "Скрабы",
-            "value": "Медовый, анисовый, пихтовый"
-          },
-          {
-            "key": "Веники",
-            "value": "Дуб, береза, можжевельник"
-          },
-          {
-            "key": "Звуки",
-            "value": "Шум ручья, валдайские колокольчики"
-          }
-        ]
-      }
-    },
-    {
-      "id": "olkhon",
-      "name": "Ольхон",
-      "guest": {
-        "min": 3,
-        "max": 6
-      },
-      "guestMin": 1,
-      "price": "30 000 — 26 667",
-      "cover": {
-        "mobile": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        },
-        "desktop": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        }
-      },
-      "gallery": {
-        "mobile": [
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-1.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-1@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-1.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-2.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-2@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-2.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-3.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-3@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-3.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-4.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-4@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-4.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-5.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-5@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-5.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-6.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-6@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-6.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-6@2x.webp"
-          }
-        ],
-        "desktop": [
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-1.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-1@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-1.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-2.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-2@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-2.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-3.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-3@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-3.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-4.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-4@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-4.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-5.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-5@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-5.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-olkhon/desktop/olkhon-6.jpg",
-            "jpg2x": "img/slides/baths-slider-olkhon/desktop/olkhon-6@2x.jpg",
-            "webp": "img/slides/baths-slider-olkhon/desktop/olkhon-6.webp",
-            "webp2x": "img/slides/baths-slider-olkhon/desktop/olkhon-6@2x.webp"
-          }
-        ]
-      },
-      "info": {
-        "description": "Глиняная парная без острых углов создает особое движение и насыщенность пара. Атмосфера настоящего стойбища шамана на Байкале.",
-        "table": [
-          {
-            "key": "Пар",
-            "value": "Артыш, анис, чабрец, зверобой, можжевельник"
-          },
-          {
-            "key": "Скрабы",
-            "value": "Сила шамана, байкальский лед"
-          },
-          {
-            "key": "Веники",
-            "value": "Дуб, береза, можжевельник"
-          },
-          {
-            "key": "Звуки",
-            "value": "Бубен, варган"
-          }
-        ]
-      }
-    },
-    {
-      "id": "taiga",
-      "name": "Таежная изба",
-      "guest": {
-        "min": 5,
-        "max": 10
-      },
-      "guestMin": 5,
-      "price": "30 000 — 26 667",
-      "cover": {
-        "mobile": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        },
-        "desktop": {
-          "jpg": "img/content/bath-options/img-1.jpg",
-          "jpg2x": "img/content/bath-options/img-1@2x.jpg",
-          "webp": "img/content/bath-options/img-1.webp",
-          "webp2x": "img/content/bath-options/img-1@2x.webp"
-        }
-      },
-      "gallery": {
-        "mobile": [
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-1.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-1@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-1.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-2.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-2@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-2.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-3.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-3@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-3.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-4.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-4@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-4.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-5.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-5@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-5.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-6.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-6@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-6.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-6@2x.webp"
-          }
-        ],
-        "desktop": [
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-1.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-1@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-1.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-1@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-2.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-2@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-2.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-2@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-3.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-3@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-3.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-3@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-4.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-4@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-4.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-4@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-5.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-5@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-5.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-5@2x.webp"
-          },
-          {
-            "jpg": "img/slides/baths-slider-tayga/desktop/tayga-6.jpg",
-            "jpg2x": "img/slides/baths-slider-tayga/desktop/tayga-6@2x.jpg",
-            "webp": "img/slides/baths-slider-tayga/desktop/tayga-6.webp",
-            "webp2x": "img/slides/baths-slider-tayga/desktop/tayga-6@2x.webp"
-          }
-        ]
-      },
-      "info": {
-        "description": "Хвойные ароматы и парение можжевеловыми вениками. Отдыхая в горячей кедровой купели среди живых елок, вы слышите звуки сибирской тайги.",
-        "table": [
-          {
-            "key": "Пар",
-            "value": "Пихта, можжевельник, масло сосны"
-          },
-          {
-            "key": "Скрабы",
-            "value": "Таежная клюква, хвойный затир, кедровый затир"
-          },
-          {
-            "key": "Веники",
-            "value": "Дуб, пихта, можжевельник, кедр"
-          },
-          {
-            "key": "Звуки",
-            "value": "Колокольчики, калимба"
-          }
-        ]
-      }
-    }
-  ],
-  "error": null
-}`;
-
-const timeSlotsJSON = `{
-  "data": [
-    {
-      "id": 1,
-      "interval": {
-        "begin": "10:00",
-        "end": "14:00"
-      }
-    },
-    {
-      "id": 2,
-      "interval": {
-        "begin": "15:00",
-        "end": "19:00"
-      }
-    },
-    {
-      "id": 3,
-      "interval": {
-        "begin": "20:00",
-        "end": "00:00"
-      }
-    }
-  ],
-  "error": null
-}`;
-
-const timeSlotsMock = JSON.parse(timeSlotsJSON);
-const mockBathes = JSON.parse(mockBath);
 
 const renderElement = (container, component, place = 'beforeend') => {
   container.insertAdjacentHTML(place, component);
@@ -716,6 +66,21 @@ const timeSlotTemplate = ({id, interval}) => {
   });
 })();
 
+async function getTimesIntervals () {
+  try {
+    const response = await fetch('/api/times');
+
+    if(!response.ok) {
+      throw new Error(`Ошибка ${response.status}`)
+    }
+    const data = await response.json();
+    return data;
+
+    }catch(error){
+      console.log(error);
+    }
+  };
+
 async function loadBath () {
   try {
     const response = await fetch('./api/objects.json');
@@ -747,6 +112,22 @@ async function loadBath () {
       renderElement(BathContainer, bathCard);
     })
   };
+
+  const bathesInputs = document.querySelectorAll('.bath-option input');
+  const dataBath = document.querySelector('[data-widget="bath"]');
+  const bathTitles = document.querySelectorAll('.bath-option__title');
+
+
+  bathesInputs.forEach((bathInput) => {
+      bathInput.addEventListener('change', () => {
+        if(result && bathInput.checked) {
+          const bathOption = bathInput.closest('.bath-option');
+          const title = bathOption.querySelector('.bath-option__title');
+          dataBath.textContent = title.textContent.trim();
+        }
+      })
+    })
+
 })();
 
 (function isActiveBath() {
@@ -939,6 +320,7 @@ async function loadBath () {
 })();
 
 (function api () {
+  const selectDateContainer = document.querySelector('[data-time="parent"]');
   const dataCalendarContainer = document.querySelector('[data-calendar]');
 
   const inputDateTime = document.getElementById('date-and-time');
@@ -947,31 +329,17 @@ async function loadBath () {
   const requestedDates = new Set();
 
   const getDate = (date) => {
-    const yeardateInit = date.getFullYear().toString();
-    const mounthdateInit = (date.getMonth() + 1).toString().padStart(2,'0');
-    const daydateInit = date.getDate().toString().padStart(2,'0');
+    const yearDateInit = date.getFullYear().toString();
+    const monthDateInit = (date.getMonth() + 1).toString().padStart(2,'0');
+    const dayDateInit = date.getDate().toString().padStart(2,'0');
 
-    const dateInit = `${yeardateInit}-${mounthdateInit}-${daydateInit}`;
+    const dateInit = `${yearDateInit}-${monthDateInit}-${dayDateInit}`;
     return dateInit;
   };
   const dateToDay  = new Date();
   const dateToDayParam = getDate(dateToDay);
   // const limit = limitInput ? Number(limitInput) : 30;
   // const limitParam = limit > 60 ? 60 : limit;
-  async function getTimesIntervals () {
-  try {
-    const response = await fetch('/api/times');
-
-    if(!response.ok) {
-      throw new Error(`Ошибка ${response.status}`)
-    }
-    const data = await response.json();
-    return data;
-
-    }catch(error){
-      console.log(error);
-    }
-  };
 
   async function getCalendar () {
     try {
@@ -989,7 +357,7 @@ async function loadBath () {
     }
   };
 
-  async function getDataFromMounth (currentDate) {
+  async function getDataFromMonth (currentDate) {
 
     try {
       if(requestedDates.has(currentDate)) {
@@ -1003,11 +371,6 @@ async function loadBath () {
         const result = await response.json();
 
         const freeDates =  Object
-          .entries(result.data)
-          .filter(([date, info]) => info.status !== 2)
-          .map(([date]) => date);
-
-        const enabledDates = Array.isArray(data) ? data : [];
 
         flatpickrInstance.set('enable', freeDates);
         requestedDates.add(currentDate);
@@ -1023,25 +386,35 @@ async function loadBath () {
     const dateToDay = new Date();
     const calendarResponse = await getCalendar();
     const calendarData = calendarResponse.data;
+    const bookingWidgetDate = document.querySelector('.booking-widget__date');
+    const bookingWidgetTime  =  document.querySelector('.booking-widget__time');
 
-    const freDates = Object.entries(calendarData)
-      .filter(([_, info]) => info.status === 3)
-      .map(([date]) => date);
+    const  getFreeObj = (response) => {
+      return Object
+          .entries(response)
+          .filter(([ _, info ]) => info.status == 3)
+          .map(([date]) => date);
+    };
 
-    const busyDates = Object.entries(calendarData)
-      .filter(([_, info]) => [0, 1, 2].includes(info.status))
-      .map(([date]) => date);
+    const getNonFreObj = (response) => {
+      return Object
+        .entries(response)
+        .filter(([ _, info]) => info.status === 0 || info.status === 1 || info.status === 2)
+        .map(([ date ])=> date);
+    };
 
     const disableBeforeToday = [{
       from: '1900-01-01',
       to: getDate(dateToDay),
     }];
 
-    const notAvailableDates = [...busyDates, ...disableBeforeToday];
+    const notFreeDates = getNonFreObj(calendarData);
+
+    const notAvailableDates = [...disableBeforeToday, ...notFreeDates];
+
 
     const maxDays = 61;
     const breakpoint = window.matchMedia('(min-width: 768px)');
-    const container = document.querySelector('[data-time="parent"]');
     let calendar;
     let flag = true;
 
@@ -1049,63 +422,69 @@ async function loadBath () {
       const result = await getTimesIntervals();
       const selectDateContainer = document.querySelector('[data-time="parent"]');
       selectDateContainer.innerHTML = ''; // Очистить перед вставкой
-
       const isLoadedSlots = result && Array.isArray(result.data) && result.data.length > 0;
-
       const slots = isLoadedSlots ? result.data : timeSlotsMock.data;
 
       slots.forEach(({ id, interval }) => {
         const timeSlot = timeSlotTemplate({ id, interval });
         renderElement(selectDateContainer, timeSlot);
       });
+
+      const bookingWidgetTime = document.querySelector('.booking-widget__time');
+      const timeInputs = document.querySelectorAll('.time-slot input');
+
+      timeInputs.forEach((input) => {
+            input.addEventListener('change', () => {
+              if(result && input.checked)  {
+                bookingWidgetTime.textContent = input.value;
+              }
+            });
+        });
     };
-
-    // function initCalendarSwipe(flatpickrInstance) {
-    //   const calendarEl = document.querySelector('[data-calendar]');
-    //   if (!calendarEl) return;
-
-    //   let startX = null;
-    //   let endX = null;
-    //   let startY = null;
-    //   let endY = null;
-
-    //   const getDeltaX = () => startX - endX;
-    //   const getDeltaY = () => startY - endY;
-
-    //   const onTouchStart = (e) => {
-    //     startX = e.touches[0].clientX;
-    //     startY = e.touches[0].clientY;
-    //     document.addEventListener('touchmove', onTouchMove);
-    //   };
-
-    //   const onTouchMove = (e) => {
-    //     e.preventDefault();
-    //     endX = e.touches[0].clientX;
-    //     endY = e.touches[0].clientY;
-    //   };
-
-    //   const onTouchEnd = (e) => {
-    //     e.preventDefault();
-    //     if (Math.abs(getDeltaX()) < Math.abs(getDeltaY())) return;
-    //     if (getDeltaX() > 0) {
-    //       flatpickrInstance.changeMonth(1);
-    //     } else {
-    //       flatpickrInstance.changeMonth(-1);
-    //     }
-    //     document.removeEventListener('touchmove', onTouchMove);
-    //   };
-
-    //   calendarEl.addEventListener('touchstart', onTouchStart);
-    //   window.addEventListener('touchend', onTouchEnd);
-    // }
 
     const renderCalendar = () => {
       const input = document.getElementById('date-and-time');
-      const nextArrowSvg = `<svg width="20" height="20" ...>...</svg>`;
-      const prevArrowSvg = `<svg width="20" height="20" ...>...</svg>`;
+      const nextArrowSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">  <path d="M10 17.5L15 12.5M10 17.5L5 12.5M10 17.5L10 1.66669" stroke="currentColor" stroke-linecap="round"/>  </svg>';
+       const prevArrowSvg = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 17.5L15 12.5M10 17.5L5 12.5M10 17.5L10 1.66669" stroke="currentColor" stroke-linecap="round"/></svg>';
+
+      function initCalendarSwipe(flatpickrInstance) {
+        let startX = null;
+        let endX = null;
+        let startY = null;
+        let endY = null;
+
+        const getDeltaX = () => startX - endX;
+        const getDeltaY = () => startY - endY;
+
+        const onTouchStart = (e) => {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          document.addEventListener('touchmove', onTouchMove);
+        };
+
+        const onTouchMove = (e) => {
+          e.preventDefault();
+          endX = e.touches[0].clientX;
+          endY = e.touches[0].clientY;
+        };
+
+        const onTouchEnd = (e) => {
+          e.preventDefault();
+          if (Math.abs(getDeltaX()) < Math.abs(getDeltaY())) return;
+          if (getDeltaX() > 0) {
+            flatpickrInstance.changeMonth(1);
+          } else {
+            flatpickrInstance.changeMonth(-1);
+          }
+          document.removeEventListener('touchmove', onTouchMove);
+        };
+
+        dataCalendarContainer.addEventListener('touchstart', onTouchStart);
+        window.addEventListener('touchend', onTouchEnd);
+      };
 
       calendar = flatpickr(input, {
-        dateFormat: 'Y-m-d',
+        dateFormat: 'j-F-H-i',
         defaultDate: null,
         conjunction: ' - ',
         minDate: 'today',
@@ -1122,23 +501,33 @@ async function loadBath () {
         onMonthChange: (instance) => {
           const nextMonth = new Date(instance.currentYear, instance.currentMonth, 1);
           renderTimeSlots(); // при смене месяца сбрасываем слоты
-          getDataFromMounth(nextMonth);
+          getDataFromMonth(nextMonth);
         },
-        onChange: () => {
+        onChange:  (dateStr) => {
+          const date = new Date(dateStr[0]);
+          const formatDate = date.toLocaleDateString('ru-RU', {
+            day: 'numeric',
+            month: 'long'
+          });
+
+           if(bookingWidgetDate && dateStr) {
+            bookingWidgetDate.textContent = formatDate ;
+           };
+
           if (flag) {
             let activeTime;
             let id;
 
-            if (container.querySelector('input:checked')) {
-              activeTime = container.querySelector('input:checked').closest('[data-time="slot"]');
+            if (selectDateContainer.querySelector('input:checked')) {
+              activeTime = selectDateContainer.querySelector('input:checked').closest('[data-time="slot"]');
               id = activeTime.dataset.timeId;
             }
 
-            container.innerHTML = '';
+            selectDateContainer.innerHTML = '';
             renderTimeSlots();
 
-            if (activeTime && !container.querySelector(`[data-time-id="${id}"]`).hasAttribute('disabled')) {
-              container.querySelector(`[data-time-id="${id}"] input`).checked = true;
+            if (activeTime && !selectDateContainer.querySelector(`[data-time-id="${id}"]`).hasAttribute('disabled')) {
+              dataCalendarContainer.querySelector(`[data-time-id="${id}"] input`).checked = true;
             }
 
             flag = false;
@@ -1150,13 +539,13 @@ async function loadBath () {
         },
       });
 
-      // initCalendarSwipe(calendar);
+      initCalendarSwipe(calendar);
     };
 
     const initCalendar = () => {
-      alert(2);
       renderCalendar();
     };
     initCalendar();
+
   });
 })();
