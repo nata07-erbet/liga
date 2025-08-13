@@ -230,35 +230,35 @@ async function loadBath () {
       Babies: 4
     }
 
-    const inputsBath = document.getElementsByName('bath-choice');
     const nomadInput = document.getElementById('nomad');
     const kurnayaIzbaInput = document.getElementById('kurnaya-izba');
     const healerInput =  document.getElementById('healer');
     const olkhonInput = document.getElementById('olkhon');
     const taigaInput = document.getElementById('taiga');
 
-    const setNonActiveBath = (bathInput, total, capacity, babyInput) => {
+    const setNonActiveBath = (bathInput, total, capacity, babiesInput) => {
       if (bathInput) {
-        bathInput.disabled = total > capacity && babyInput.value < 4;
-}
+        bathInput.disabled = total > capacity || babiesInput > 4 ;
+      }
     };
 
-    const setNonActiveBathTaiga = (bathInput, total, capacityMin, capacityMax) => {
-      bathInput.disabled = !(total >= capacityMin && total <= capacityMax && babyInput.value >= 4);
-    };
+    // const setNonActiveBathTaiga = (bathInput, total, capacityMin, capacityMax) => {
+    //   bathInput.disabled = !(total >= capacityMin && total <= capacityMax && babyInput.value >= 4);
+    // };
 
     const updateBathAvailability = () => {
-      const totalCount = Number(adultsWidget.textContent) + Number(childrenWidget.textContent) ;
+      const babiesCount = Number(babyInput.value);
+      const totalCount = Number(adultsWidget.textContent) + Number(childrenWidget.textContent);
 
-      setNonActiveBath(nomadInput, totalCount, CapacityBathMap.Nomad);
-      setNonActiveBath(kurnayaIzbaInput, totalCount, CapacityBathMap.KurnayaIzba);
-      setNonActiveBath(healerInput, totalCount, CapacityBathMap.Healer);
-      setNonActiveBath(olkhonInput, totalCount, CapacityBathMap.Olkhon);
-
-      setNonActiveBathTaiga(taigaInput, totalCount, CapacityBathMap.TaigaMin, CapacityBathMap.TaigaMax);
+      setNonActiveBath(nomadInput, totalCount, CapacityBathMap.Nomad, babiesCount);
+      setNonActiveBath(kurnayaIzbaInput, totalCount, CapacityBathMap.KurnayaIzba, babiesCount);
+      setNonActiveBath(healerInput, totalCount, CapacityBathMap.Healer, babiesCount);
+      setNonActiveBath(olkhonInput, totalCount, CapacityBathMap.Olkhon, babiesCount);
     };
 
 
+
+    // setNonActiveBathTaiga(taigaInput, totalCount, CapacityBathMap.TaigaMin, CapacityBathMap.TaigaMax);
     decreaseButtonAdults.addEventListener('click', () => {
       setValueDec(adultInput ,MIN_VALUE.minAdults );
       upDate(adultsWidget, adultInput.value);
@@ -293,16 +293,18 @@ async function loadBath () {
       updateBathAvailability();
     });
 
-    adultInput.addEventListener('change', (evt) => {
-      if(!isValidInput(adultInput.value)) {
+    adultInput.addEventListener('change', () => {
+      if(!isValidInput(adultInput)) {
+        return;
       } else {
-        upDate(childrenWidget, childInput.value);
+        upDate(adultsWidget, adultInput.value);
         updateBathAvailability();
       }
     });
 
     childInput.addEventListener('change', () => {
-      if(!isValidInput(childInput)) {
+      if(!isValidInput(childInput.value)) {
+        return;
       } else {
         upDate(childrenWidget, childInput.value);
         updateBathAvailability();
@@ -311,7 +313,7 @@ async function loadBath () {
 
     babyInput.addEventListener('change', () => {
       if(!isValidInput(babyInput.value)) {
-        alert('Вводите только цифры');
+        return;
       } else {
         updateBathAvailability();
       }
