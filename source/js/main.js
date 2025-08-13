@@ -34,14 +34,7 @@ import {initMobileSlider} from './modules/sliders/init-mobile-slider';
 import {initPlayer} from './modules/init-player';
 import {initContactsSlider} from './modules/sliders/init-contacts-slider';
 import {screenHeight} from './modules/init-screen-height';
-// import {sumCertificate} from './modules/nata-sum-certificate';
-// import {realCertificate} from './modules/nata-real-certificate';
-// import {showCertificate} from './modules/nata-show-certificate';
-// import {setAttributes} from './modules/nata-set-attributes';
-// import {buttonNotActive} from './modules/nata-button-not-active';
-// import {bathHouseIsActive} from './modules/nata-bath-house-is-active';
-// import {setAdultsValue} from './modules/nata-set-adults-value';
-// import {renderBathList} from './modules/nata-render-bath-list';
+
 
 // ---------------------------------
 
@@ -92,14 +85,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initInnerContactsMap();
     initPlayer();
 
-    // sumCertificate();
-    // realCertificate();
-    // showCertificate();
-    // setAttributes();
-    // buttonNotActive();
-    // bathHouseIsActive();
-    // setAdultsValue();
-    // renderBathList();
+
   });
 });
 

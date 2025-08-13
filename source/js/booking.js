@@ -115,7 +115,6 @@ async function loadBath () {
 
   const bathesInputs = document.querySelectorAll('.bath-option input');
   const dataBath = document.querySelector('[data-widget="bath"]');
-  const bathTitles = document.querySelectorAll('.bath-option__title');
 
 
   bathesInputs.forEach((bathInput) => {
@@ -153,8 +152,18 @@ async function loadBath () {
     const increaseButtonBaby = document.querySelector('div[data-counter-type="baby"] button[data-counter="increase"]');
 
     const adultInput = document.querySelector('input[name="adults-qty"]');
+    adultInput.addEventListener('input', () => {
+      adultInput.value = adultInput.value.replace(/\D/g, '')
+    });
     const childInput = document.querySelector('input[name="child-qty"]');
+    childInput.addEventListener('input', () => {
+      childInput.value = childInput.value.replace(/\D/g, '')
+    });
+
     const babyInput = document.querySelector('input[name="baby-qty"]');
+    babyInput.addEventListener('input', () => {
+      babyInput.value = babyInput.value.replace(/\D/g, '')
+    });
 
     const adultsWidget = document.querySelector('div[data-widget="adults"] span');
     const childrenWidget = document.querySelector('div[data-widget="child"] span');
@@ -238,12 +247,6 @@ async function loadBath () {
       bathInput.disabled = !(total >= capacityMin && total <= capacityMax && babyInput.value >= 4);
     };
 
-    const isValidInput = (value) => {
-      const regex = /^\d+$/;
-
-      return regex.test(value);
-    };
-
     const updateBathAvailability = () => {
       const totalCount = Number(adultsWidget.textContent) + Number(childrenWidget.textContent) ;
 
@@ -292,17 +295,14 @@ async function loadBath () {
 
     adultInput.addEventListener('change', (evt) => {
       if(!isValidInput(adultInput.value)) {
-        alert('Вводите только цифры');
       } else {
         upDate(childrenWidget, childInput.value);
         updateBathAvailability();
       }
-
     });
 
     childInput.addEventListener('change', () => {
-      if(!isValidInput(childInput.value)) {
-
+      if(!isValidInput(childInput)) {
       } else {
         upDate(childrenWidget, childInput.value);
         updateBathAvailability();
@@ -549,3 +549,20 @@ async function loadBath () {
 
   });
 })();
+
+function checkData () {
+  const data = {
+      'object': 'object_id',
+      'date': 'YYYY-MM-DD',
+      'time': "time_id",
+      'guest': {
+          'adult': 0,
+          'child': 0,
+          'baby': 0
+      }
+  };
+
+  const formInputs = {
+
+  }
+}

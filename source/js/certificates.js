@@ -151,109 +151,118 @@
   window.addEventListener('DOMContentLoaded', () => {
     const priceInputs = document.getElementsByName("certificate-option");
 
-  const fieldsetGift = document.querySelector('[data-certificates="gift"]');
-  const inputs = document.querySelectorAll(".custom-input input");
-  const inputsGift = Array.from(fieldsetGift.querySelectorAll("input"));
-  const giftToggle = document.querySelector(
-    '[data-certificates="toggle"] input[type="checkbox"]'
-  );
-
-  const name = document.getElementById("name");
-  const phone = document.getElementById("phone");
-  const email = document.getElementById("email");
-
-  const nameGift = document.getElementById("name-gift");
-  const phoneGift = document.getElementById("phone-gift");
-  const message = document.getElementById("message");
-
-  const verticalInput = document.querySelector('input[value="vertical"]');
-  const horisontInput = document.querySelector('input[value="horizontal"]');
-
-  const isNotEmpty = (arrInputs) => {
-    return Array.from(arrInputs).every((input) => input.value.trim() !== "");
-  };
-
-  const isRequiredInputs = (arrInputs) => {
-    return Array.from(arrInputs).every((input) => input.required);
-  };
-
-  const isValid = () => {
-    if (giftToggle && giftToggle.checked) {
-      return isNotEmpty(inputs) &&
-        isNotEmpty(inputsGift) &&
-        isRequiredInputs(inputs) &&
-        isRequiredInputs(inputsGift)
-        ? true
-        : false;
-    } else {
-      return isNotEmpty(inputs) && isRequiredInputs(inputs) ? true : false;
-    }
-  };
-
-  const OrientMap = {
-    Vertical: "vertical",
-    Horizontal: "horizontal",
-  };
-
-  const updateOrient = (verticalInput) => {
-    return verticalInput.checked ? OrientMap.Vertical : OrientMap.Horizontal;
-  };
-
-  const getSelectedCertificatePrice = () => {
-    const selectedInput = Array.from(priceInputs).find(
-      (input) => input.checked
+    const fieldsetGift = document.querySelector('[data-certificates="gift"]');
+    const inputs = document.querySelectorAll(".custom-input input");
+    const inputsGift = Array.from(fieldsetGift.querySelectorAll("input"));
+    const giftToggle = document.querySelector(
+      '[data-certificates="toggle"] input[type="checkbox"]'
     );
-    return selectedInput ? Number(selectedInput.value) : 0;
-  };
 
-  const form = document.querySelector("form");
-  const formButton = document.querySelector(".btn form__desktop");
+    const name = document.getElementById("name");
+    const phone = document.getElementById("phone");
+    phone.setAttribute('inputmode', 'numeric');
+    phone.setAttribute('maxlength', 11);
+    phone.addEventListener('input', () => {
+      phone.value = phone.value.replace(/\D/g, '')
+    });
 
-  form.addEventListener("submit", function (evt) {
-    evt.preventDefault();
+    const email = document.getElementById("email");
+    email.setAttribute('type', 'email');
 
-    const sum = getSelectedCertificatePrice();
-    const orientation = updateOrient(verticalInput);
+    const nameGift = document.getElementById("name-gift");
+    const phoneGift = document.getElementById("phone-gift");
+    const message = document.getElementById("message");
 
-    const formData = {
-      sum: sum,
-      orientation: orientation,
-      payer: {
-        name: name.value,
-        phone: phone.value,
-        email: email.value,
-      },
-      client: {
-        name: nameGift.value,
-        phone: phoneGift.value,
-        comment: message.value,
-      },
+    const verticalInput = document.querySelector('input[value="vertical"]');
+
+    const isNotEmpty = (arrInputs) => {
+      return Array.from(arrInputs).every((input) => input.value.trim() !== "");
     };
 
-    if (!isValid()) {
-      form.reportValidity();
+    const isRequiredInputs = (arrInputs) => {
+      return Array.from(arrInputs).every((input) => input.required);
+    };
+
+    const isValid = () => {
+      if (giftToggle && giftToggle.checked) {
+        return isNotEmpty(inputs) &&
+          isNotEmpty(inputsGift) &&
+          isRequiredInputs(inputs) &&
+          isRequiredInputs(inputsGift);
+      } else {
+        return isNotEmpty(inputs) && isRequiredInputs(inputs);
+      }
+    };
+
+    const OrientMap = {
+      Vertical: "vertical",
+      Horizontal: "horizontal",
+    };
+
+    const updateOrient = (verticalInput) => {
+      return verticalInput.checked ? OrientMap.Vertical : OrientMap.Horizontal;
+    };
+
+    const getSelectedCertificatePrice = () => {
+      const selectedInput = Array.from(priceInputs).find(
+        (input) => input.checked
+      );
+      return selectedInput ? Number(selectedInput.value) : 0;
+    };
+
+    const form = document.querySelector('form[action="/api/buy/certificate"]');
+    if (!form) {
+      console.warn('Форма не найдена');
       return;
     }
-78
-    async function postData () {
-      try {
-        const response = await fetch("/api/buy/certificate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-        if (response.ok) {
-          window.location.href = "/certificates-success.html";
-        } else {
+
+    form.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      alert(2);
+
+      const sum = getSelectedCertificatePrice();
+      const orientation = updateOrient(verticalInput);
+
+      const formData = {
+        sum: sum,
+        orientation: orientation,
+        payer: {
+          name: name.value,
+          phone: phone.value,
+          email: email.value,
+        },
+        client: {
+          name: nameGift.value,
+          phone: phoneGift.value,
+          comment: message.value,
+        },
+      };
+
+      // if (!isValid()) {
+      //   form.reportValidity();
+      //   return;
+      // }
+
+      async function postData () {
+        try {
+          const response = await fetch('https://echo.htmlacademy.ru/', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          });
+          if (response.ok) {
+            window.location.href = "/certificates-success.html";
+          } else {
+            window.location.href = "/certificates-error.html";
+          }
+        } catch (error) {
+          console.error("Error:", error);
           window.location.href = "/certificates-error.html";
         }
-      } catch (error) {
-        console.error("Error:", error);
-        window.location.href = "/certificates-error.html";
       }
-    }
-    postData();
-  });
-  })
 
+      postData();
+    });
+  });
 })();
+
