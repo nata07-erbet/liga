@@ -551,8 +551,8 @@ async function loadBath () {
   });
 })();
 
-function checkData () {
-  const data = {
+function checkBath () {
+  const dataPost = {
       'object': 'object_id',
       'date': 'YYYY-MM-DD',
       'time': "time_id",
@@ -562,8 +562,4 @@ function checkData () {
           'baby': 0
       }
   };
-
-  const formInputs = {
-
-  }
 }
