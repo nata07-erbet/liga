@@ -238,13 +238,13 @@ async function loadBath () {
 
     const setNonActiveBath = (bathInput, total, capacity, babiesInput) => {
       if (bathInput) {
-        bathInput.disabled = total > capacity || babiesInput > 4 ;
+        bathInput.disabled = total > capacity || babiesInput > 4;
       }
     };
 
-    // const setNonActiveBathTaiga = (bathInput, total, capacityMin, capacityMax) => {
-    //   bathInput.disabled = !(total >= capacityMin && total <= capacityMax && babyInput.value >= 4);
-    // };
+    const setNonActiveBathTaiga = (bathInput, total, capacityMin, capacityMax) => {
+      bathInput.disabled = total < capacityMin || total > capacityMax;
+    };
 
     const updateBathAvailability = () => {
       const babiesCount = Number(babyInput.value);
@@ -254,11 +254,10 @@ async function loadBath () {
       setNonActiveBath(kurnayaIzbaInput, totalCount, CapacityBathMap.KurnayaIzba, babiesCount);
       setNonActiveBath(healerInput, totalCount, CapacityBathMap.Healer, babiesCount);
       setNonActiveBath(olkhonInput, totalCount, CapacityBathMap.Olkhon, babiesCount);
+      setNonActiveBathTaiga(taigaInput, totalCount, CapacityBathMap.TaigaMin, CapacityBathMap.TaigaMax);
     };
 
 
-
-    // setNonActiveBathTaiga(taigaInput, totalCount, CapacityBathMap.TaigaMin, CapacityBathMap.TaigaMax);
     decreaseButtonAdults.addEventListener('click', () => {
       setValueDec(adultInput ,MIN_VALUE.minAdults );
       upDate(adultsWidget, adultInput.value);
