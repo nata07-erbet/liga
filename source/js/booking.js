@@ -57,6 +57,7 @@ const timeSlotTemplate = ({id, interval}) => {
           </div>`;
 };
 
+
 (function () {
   document.addEventListener('DOMContentLoaded', () => {
     const button = document.querySelector('.header__btn-reserve');
@@ -320,7 +321,37 @@ async function loadBath () {
   });
 })();
 
+(function checkBath () {
+  const idBathes = document.querySelectorAll('input[name="bath-choice"]');
+  const bathChecked = Array.from(idBathes).find((input) => input.checked);
+  const idBathChecked =  bathChecked ? bathChecked.id : null;
+
+  const adultsWidget = document.querySelector('div[data-widget="adults"] span');
+  const childrenWidget = document.querySelector('div[data-widget="child"] span');
+  const babyInput = document.querySelector('input[name="baby-qty"]');
+
+  const babyValue = Number(babyInput.value);
+  const adultValue = Number(adultsWidget.textContent);
+  const childValue =  Number(childrenWidget.textContent);
+
+  const timeSlots = document.querySelectorAll('input[name="time-choice"]');
+  const timeSlotChecked = Array.from(timeSlots).find((input) => input.checked);
+  const time = timeSlotChecked ?timeSlotChecked.value : null;
+
+
+  const dataPost = {
+      'object': idBathChecked,
+      'date': new Date(),
+      'time': time,
+      'guest': {
+          'adult': adultValue,
+          'child': childValue,
+          'baby': babyValue     }
+  };
+})();
+
 (function api () {
+
   const selectDateContainer = document.querySelector('[data-time="parent"]');
   const dataCalendarContainer = document.querySelector('[data-calendar]');
 
@@ -369,12 +400,11 @@ async function loadBath () {
           throw new Error();
         };
 
-        const result = await response.json();
+        const data = await response.json();
+        return data;
 
-        const freeDates =  Object
-
-        flatpickrInstance.set('enable', freeDates);
-        requestedDates.add(currentDate);
+        // flatpickrInstance.set('enable', freeDates);
+        // requestedDates.add(currentDate);
     }
 
     } catch(error){
@@ -506,6 +536,7 @@ async function loadBath () {
         },
         onChange:  (dateStr) => {
           const date = new Date(dateStr[0]);
+          const dataInput = date;
           const formatDate = date.toLocaleDateString('ru-RU', {
             day: 'numeric',
             month: 'long'
@@ -547,19 +578,7 @@ async function loadBath () {
       renderCalendar();
     };
     initCalendar();
-
   });
+
 })();
 
-function checkBath () {
-  const dataPost = {
-      'object': 'object_id',
-      'date': 'YYYY-MM-DD',
-      'time': "time_id",
-      'guest': {
-          'adult': 0,
-          'child': 0,
-          'baby': 0
-      }
-  };
-}
