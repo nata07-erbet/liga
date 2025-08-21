@@ -321,34 +321,6 @@ async function loadBath () {
   });
 })();
 
-(function checkBath () {
-  const idBathes = document.querySelectorAll('input[name="bath-choice"]');
-  const bathChecked = Array.from(idBathes).find((input) => input.checked);
-  const idBathChecked =  bathChecked ? bathChecked.id : null;
-
-  const adultsWidget = document.querySelector('div[data-widget="adults"] span');
-  const childrenWidget = document.querySelector('div[data-widget="child"] span');
-  const babyInput = document.querySelector('input[name="baby-qty"]');
-
-  const babyValue = Number(babyInput.value);
-  const adultValue = Number(adultsWidget.textContent);
-  const childValue =  Number(childrenWidget.textContent);
-
-  const timeSlots = document.querySelectorAll('input[name="time-choice"]');
-  const timeSlotChecked = Array.from(timeSlots).find((input) => input.checked);
-  const time = timeSlotChecked ?timeSlotChecked.value : null;
-
-
-  const dataPost = {
-      'object': idBathChecked,
-      'date': new Date(),
-      'time': time,
-      'guest': {
-          'adult': adultValue,
-          'child': childValue,
-          'baby': babyValue     }
-  };
-})();
 
 (function api () {
 
@@ -418,7 +390,6 @@ async function loadBath () {
     const calendarResponse = await getCalendar();
     const calendarData = calendarResponse.data;
     const bookingWidgetDate = document.querySelector('.booking-widget__date');
-    const bookingWidgetTime  =  document.querySelector('.booking-widget__time');
 
     const  getFreeObj = (response) => {
       return Object
@@ -534,16 +505,20 @@ async function loadBath () {
           renderTimeSlots(); // при смене месяца сбрасываем слоты
           getDataFromMonth(nextMonth);
         },
-        onChange:  (dateStr) => {
-          const date = new Date(dateStr[0]);
-          const dataInput = date;
-          const formatDate = date.toLocaleDateString('ru-RU', {
+        onChange: (dateStr) => {
+          const saveDate = (dateStr) => {
+            const date = new Date(dateStr[0]);
+            return date;
+          };
+
+          const inputDate = saveDate(dateStr);
+          const formatDate = inputDate.toLocaleDateString('ru-RU', {
             day: 'numeric',
             month: 'long'
           });
 
            if(bookingWidgetDate && dateStr) {
-            bookingWidgetDate.textContent = formatDate ;
+            bookingWidgetDate.textContent = formatDate;
            };
 
           if (flag) {
@@ -579,6 +554,155 @@ async function loadBath () {
     };
     initCalendar();
   });
+
+  async function handleSubmitCheckBath () {
+    const BASE_URL = ' https://echo.htmlacademy.ru/';
+
+    const idBathes = document.querySelectorAll('input[name="bath-choice"]');
+    const bathChecked = Array.from(idBathes).find((input) => input.checked);
+    const idBathChecked =  bathChecked ? bathChecked.id : null;
+
+    const adultsWidget = document.querySelector('div[data-widget="adults"] span');
+    const childrenWidget = document.querySelector('div[data-widget="child"] span');
+    const babyInput = document.querySelector('input[name="baby-qty"]');
+
+    const babyValue = Number(babyInput.value);
+    const adultValue = Number(adultsWidget.textContent);
+    const childValue =  Number(childrenWidget.textContent);
+
+    const timeSlots = document.querySelectorAll('input[name="time-choice"]');
+    const timeSlotChecked = Array.from(timeSlots).find((input) => input.checked);
+    const time = timeSlotChecked ?timeSlotChecked.value : null;
+
+    calendar = flatpickr(input, {
+      dateFormat: 'j-F-H-i',
+      defaultDate: null,
+      conjunction: ' - ',
+      minDate: 'today',
+      maxDate: new Date().fp_incr(maxDays),
+      disable: notAvailableDates,
+      nextArrow: nextArrowSvg,
+      prevArrow: prevArrowSvg,
+      inline: true,
+      position: 'auto center',
+      monthSelectorType: 'static',
+      locale: {
+        firstDayOfWeek: 1
+      },
+      onMonthChange: (instance) => {
+        const nextMonth = new Date(instance.currentYear, instance.currentMonth, 1);
+        renderTimeSlots(); // при смене месяца сбрасываем слоты
+        getDataFromMonth(nextMonth);
+      },
+      onChange: (dateStr) => {
+        const saveDate = (dateStr) => {
+          const date = new Date(dateStr[0]);
+          return date;
+        };
+
+        const inputDate = saveDate(dateStr);
+        const formatDate = inputDate.toLocaleDateString('ru-RU', {
+          day: 'numeric',
+          month: 'long'
+        });
+
+         if(bookingWidgetDate && dateStr) {
+          bookingWidgetDate.textContent = formatDate ;
+         };
+
+        if (flag) {
+          let activeTime;
+          let id;
+
+          if (selectDateContainer.querySelector('input:checked')) {
+            activeTime = selectDateContainer.querySelector('input:checked').closest('[data-time="slot"]');
+            id = activeTime.dataset.timeId;
+          }
+
+          selectDateContainer.innerHTML = '';
+          renderTimeSlots();
+
+          if (activeTime && !selectDateContainer.querySelector(`[data-time-id="${id}"]`).hasAttribute('disabled')) {
+            dataCalendarContainer.querySelector(`[data-time-id="${id}"] input`).checked = true;
+          }
+
+          flag = false;
+        }
+
+        if (!breakpoint.matches && window.accordions) {
+          window.accordions.updateAccordionsHeight?.();
+        }
+      },
+    });
+
+    const dataPost = {
+        'object': idBathChecked,
+        'date':inputDate,
+        'time': time,
+        'guest': {
+            'adult': adultValue,
+            'child': childValue,
+            'baby': babyValue
+          }
+    };
+
+    try {
+        const response =  await fetch(`${BASE_URL}/check`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(dataPost)
+        });
+
+        const data = response.json();
+
+        if(data.error === null) {
+          console.log('Второй этап');
+        } else {
+          console.log('Moдальное окно');
+        }
+
+    } catch(error) {
+      console.error(`Ошибка: ${error}`)
+    }
+  };
+
+  (function sendData () {
+    const buttonSend = document.querySelector('.booking-widget__desktop');
+    const form = document.querySelector('form');
+
+    const adultsWidget = document.querySelector('div[data-widget="adults"] span');
+    const childrenWidget = document.querySelector('div[data-widget="child"] span');
+    const bookingWidgetDate = document.querySelector('.booking-widget__date');
+    const bookingWidgetTime = document.querySelector('.booking-widget__time');
+
+    const dataBath = document.querySelector('[data-widget="bath"]');
+    const dataBathName = dataBath.textContent;
+
+   const result = loadBath();
+   const bathes = result.data;
+
+   if (bathes) {
+    const names = bathes.map((bath) => bath.name);
+    return names;
+   };
+
+   if (names && names.includes(dataBathName)) {
+    return true;
+   };
+   const flag = isActiveButtonSend();
+
+   if (flag === true) {
+     buttonSend.disabled = false;
+   };
+
+   buttonSend.addEventListener('click', (evt) => {
+    evt.preventDefault();
+
+     if(flag) {
+       handleSubmitCheckBath();
+     };
+   });
+  })();
 
 })();
 
